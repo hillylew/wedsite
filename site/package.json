@@ -6,7 +6,8 @@
   "scripts": {
     "clean": "rm -rf _site .cache",
     "build": "npm run clean && eleventy && jampack ./_site",
-    "dev": "npm run clean && eleventy --serve"
+    "dev": "npm run clean && eleventy --serve",
+    "deploy": "wrangler pages deploy"
   },
   "keywords": [],
   "author": "",
@@ -26,7 +27,8 @@
     "fluid-tailwind": "^1.0.4",
     "groq": "^3.82.0",
     "postcss": "^8.5.3",
-    "tailwindcss": "^3.4.11"
+    "tailwindcss": "^3.4.11",
+    "wrangler": "^3.114.17"
   },
   "dependencies": {
     "@alpinejs/focus": "^3.14.9",
