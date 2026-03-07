@@ -1,0 +1,49 @@
+<footer>
+  <img src="/img/blockm.svg" alt="U-M Block M" />
+
+  <address>
+    <p @text="contactInfo.address"></p>
+
+    <p
+      @text="`${contactInfo.city}, ${contactInfo.state} ${contactInfo.zip}`"
+    ></p>
+  </address>
+
+  <a :href="`tel:${contactInfo.phone}`" @text="contactInfo.phone"></a>
+  <a :href="`mailto:${contactInfo.email}`" @text="contactInfo.email"></a>
+
+  <ul webc:if="contactInfo.socials">
+    <li webc:for="social of contactInfo.socials">
+      <a :href="social.url">
+        <span @text="social.name"></span>
+        <img
+          webc:if="social.icon"
+          :src="imageHelper(social.icon)"
+          :alt="social.name"
+        />
+      </a>
+    </li>
+  </ul>
+
+  <p>
+    <span @text="`&copy ${currentYear()}`"></span>
+
+    <a href="https://regents.umich.edu" class="underline">
+      Regents of the University of Michigan
+    </a>
+  </p>
+
+  <p>
+    <span>Site produced by</span>
+
+    <a href="https://creative.umich.edu" class="underline">
+      Michigan Creative
+    </a>
+
+    <span>, a unit of the</span>
+
+    <a href="https://vpcomm.umich.edu" class="underline">
+      Office of the Vice President for Communications
+    </a>
+  </p>
+</footer>

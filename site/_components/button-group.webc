@@ -1,0 +1,7 @@
+<section>
+  <ul>
+    <li webc:for="button of buttons">
+      <a :href="button.url || `/${button.slug}`" @text="button.label"></a>
+    </li>
+  </ul>
+</section>

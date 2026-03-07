@@ -1,0 +1,54 @@
+<script webc:setup>
+  // Finds the first part of a slug.
+  function getMenuSection(slug, menu) {
+    // Trim off the first / if it's there.
+    if (slug.charAt(0) === "/") {
+      slug = slug.slice(1);
+    }
+
+    // Split the slug into array by slash.
+    const splitSlug = slug.split("/");
+
+    // Find the matching section.
+    const matchingSection = menu.find((item) => item.slug === splitSlug[0]);
+
+    // Return the section links.
+    return matchingSection ? matchingSection?.links : false;
+  }
+</script>
+
+<aside webc:if="getMenuSection(page.url, mainMenu)">
+  <header>In this section</header>
+
+  <nav>
+    <ul>
+      <li webc:for="item of getMenuSection(page.url, mainMenu)">
+        <a
+          :href="`/${item.slug}`"
+          :class="page.url.includes('/' + item.slug) && 'underline'"
+          @text="item.title"
+        ></a>
+
+        <ul webc:if="item.children && page.url.includes('/' + item.slug)">
+          <li webc:for="item of item.children">
+            <a
+              :href="`/${item.slug}`"
+              :class="page.url.includes('/' + item.slug) && 'underline'"
+              @text="item.title"
+            ></a>
+
+            <ul webc:if="item.children && page.url.includes('/' + item.slug)">
+              <li webc:for="item of item.children">
+                <a
+                  :href="`/${item.slug}`"
+                  :class="page.url.includes('/' + item.slug) && 'underline'"
+                  @text="item.title"
+                ></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</aside>

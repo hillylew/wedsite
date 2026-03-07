@@ -1,0 +1,25 @@
+<script webc:setup>
+  function alignmentClasses(alignment) {
+    if (alignment === "left") {
+      return "sm:float-left sm:mr-8 mb-8";
+    }
+
+    if (alignment === "right") {
+      return "sm:float-right sm:ml-8 mb-8";
+    }
+
+    return "clear-both";
+  }
+</script>
+
+<section :class="alignmentClasses(alignment)">
+  <figure class="table">
+    <img :src="imageHelper(image)" :alt="imageAlt" />
+
+    <figcaption
+      webc:if="caption"
+      @text="caption"
+      class="table-caption caption-bottom"
+    ></figcaption>
+  </figure>
+</section>

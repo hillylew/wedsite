@@ -1,0 +1,45 @@
+<template webc:for="section of sections" webc:nokeep>
+
+  <template webc:if="section._type === 'accordions'" webc:nokeep>
+    <accordions
+      :@heading="section.heading"
+      :@accordions="section.accordions"
+    ></accordions>
+  </template>
+
+  <template webc:if="section._type === 'buttonGroup'" webc:nokeep>
+    <button-group :@buttons="section.buttons"></button-group>
+  </template>
+
+  <template webc:if="section._type === 'contentBreak'" webc:nokeep>
+    <content-break :@break-style="section.style"></content-break>
+  </template>
+
+  <template webc:if="section._type === 'quote'" webc:nokeep>
+    <quote
+      :@quote="section.quote"
+      :@attribution="section.attribution"
+    ></quote>
+  </template> 
+
+  <template webc:if="section._type === 'richImage'" webc:nokeep>
+    <rich-image
+      :@image="section.image"
+      :@caption="section.imageCaption"
+      :@alignment="section.image.alignment"
+      :@image-alt="section.imageAltText"
+    ></rich-image>
+  </template>
+
+  <template webc:if="section._type === 'richText'" webc:nokeep>
+    <rich-text :@text="section.content"></rich-text>
+  </template>
+
+  <template webc:if="section._type === 'tableSection'" webc:nokeep>
+    <table-section
+      :@rows="section.data.rows"
+      :@table-style="section.style"
+    ></table-section>
+  </template>
+  
+</template>

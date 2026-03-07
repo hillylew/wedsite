@@ -1,0 +1,19 @@
+---
+layout: base
+---
+
+<div>
+  <sidebar :@page="page" :@main-menu="collections.mainMenu"></sidebar>
+
+  <main id="main">
+    <article>
+      <h1 @text="title"></h1>
+
+      <template webc:if="sections" webc:nokeep>
+        <page-sections :@sections="sections"></page-sections>
+      </template>
+
+      <template @raw="content" webc:nokeep></template>
+    </article>
+  </main>
+</div>

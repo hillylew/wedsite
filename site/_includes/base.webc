@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" class="h-full no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="view-transition" content="same-origin" />
+
+    <meta name="description" :content="seo.metaDescription" webc:if="seo" />
+    <meta name="twitter:card" value="summary" />
+    <meta property="og:title" :content="title" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" :content="env.siteURL" />
+    <meta property="og:image" :content="`${env.siteURL}/og-image.jpg`" />
+    <meta name="theme-color" content="#00274c" />
+    <meta webc:if="seo?.noindex" name="robots" content="noindex" />
+
+    <link webc:keep rel="stylesheet" :href="css" />
+    <link webc:keep rel="manifest" href="/manifest.webmanifest" />
+    <link webc:keep rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <title @text="`${title} | ${siteSettings.siteTitle}`"></title>
+
+    <template
+      webc:type="11ty"
+      11ty:type="liquid"
+      webc:if="siteSettings.googleID"
+    >
+      <script webc:keep>
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != "dataLayer" ? "&l=" + l : "";
+          j.async = true;
+          j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+          f.parentNode.insertBefore(j, f);
+        })(
+          window,
+          document,
+          "script",
+          "dataLayer",
+          "{{ siteSettings.googleID }}",
+        );
+      </script>
+    </template>
+
+    <script webc:keep>
+      document.querySelector("html").classList.replace("no-js", "js");
+    </script>
+
+    <script webc:keep :src="javascript" defer></script>
+  </head>
+
+  <body>
+    <template
+      webc:type="11ty"
+      11ty:type="liquid"
+      webc:if="siteSettings.googleID"
+    >
+      <noscript>
+        <iframe
+          src="https://www.googletagmanager.com/ns.html?id={{ siteSettings.googleID }}"
+          height="0"
+          width="0"
+          style="display: none; visibility: hidden"
+        >
+        </iframe>
+      </noscript>
+    </template>
+
+    <skip-link></skip-link>
+    <site-header
+      :@navigation="mainMenu.sections"
+      :@page="page"
+      :@settings="siteSettings"
+    ></site-header>
+    <template @raw="content" webc:nokeep></template>
+    <site-footer :@contact-info="contactInfo"></site-footer>
+  </body>
+</html>

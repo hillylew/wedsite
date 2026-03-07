@@ -1,0 +1,7 @@
+<a href="/">
+  <img
+    :src="imageHelper(settings.signature)"
+    :alt="`${settings.siteTitle} signature`"
+  />
+</a>
+

@@ -1,0 +1,35 @@
+{
+  "name": "sanity-eleventy",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf _site .cache",
+    "build": "npm run clean && eleventy && jampack ./_site",
+    "dev": "npm run clean && eleventy --serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-fetch": "^5.0.2",
+    "@11ty/eleventy-plugin-webc": "^0.11.2",
+    "@divriots/jampack": "^0.33.0",
+    "@portabletext/to-html": "^2.0.14",
+    "@sanity/client": "^6.28.4",
+    "@sanity/image-url": "^1.1.0",
+    "autoprefixer": "^10.4.21",
+    "cssnano": "^7.0.6",
+    "dotenv": "^16.4.7",
+    "esbuild": "^0.25.2",
+    "fluid-tailwind": "^1.0.4",
+    "groq": "^3.82.0",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.11"
+  },
+  "dependencies": {
+    "@alpinejs/focus": "^3.14.9",
+    "alpinejs": "^3.14.9"
+  }
+}

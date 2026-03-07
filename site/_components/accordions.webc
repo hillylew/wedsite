@@ -1,0 +1,64 @@
+<section x-data="accordions">
+  <h2 webc:if="heading" @text="heading"></h2>
+
+  <details
+    webc:for="accordion of accordions"
+    :id="slugify(accordion.heading)"
+    class="group"
+  >
+    <summary class="flex cursor-pointer list-none items-center">
+      <svg
+        class="mr-6 h-6 w-6"
+        viewBox="0 0 32 32"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <line
+          x1="0"
+          y1="16"
+          x2="32"
+          y2="16"
+          stroke="currentColor"
+          stroke-width="4"
+        />
+
+        <line
+          x1="16"
+          y1="0"
+          x2="16"
+          y2="32"
+          stroke="currentColor"
+          stroke-width="4"
+          class="origin-center transition-transform duration-150 group-open:rotate-90"
+        />
+      </svg>
+
+      <span @text="accordion.heading"></span>
+    </summary>
+
+    <div @html="portableToHTML(accordion.richText.content)"></div>
+  </details>
+
+  <script webc:keep>
+    document.addEventListener("alpine:init", () => {
+      Alpine.data("accordions", () => ({
+        init() {
+          // Return if there isn't a hash in the URL.
+          if (!window.location.hash) {
+            return;
+          }
+
+          // Find the matching element of the hash.
+          const hashElement = document.querySelector(window.location.hash);
+
+          // Return if the element wasn't found or isn't a details element.
+          if (!hashElement || hashElement.tagName !== "DETAILS") {
+            return;
+          }
+
+          // Open the element.
+          hashElement.open = true;
+        },
+      }));
+    });
+  </script>
+</section>

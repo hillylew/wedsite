@@ -1,0 +1,7 @@
+<section>
+  <blockquote>
+    <p @text="quote"></p>
+  </blockquote>
+
+  <p webc:if="section.attribution" @text="section.attribution"></p>
+</section>

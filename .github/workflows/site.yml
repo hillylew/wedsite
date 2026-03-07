@@ -1,0 +1,68 @@
+name: Deploy site
+
+# Cancel in progress jobs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Triggers
+on:
+  # Uncomment to enable automatic deploys on push to main branch
+  # push:
+  #   branches: [main]
+  #   paths: ["site/**"]
+
+  # Manual deploy from GitHub UI
+  workflow_dispatch:
+
+  # Allows a Sanity publish to trigger a deploy. This needs to be setup in Sanity.
+  repository_dispatch:
+    types: [sanity_publish]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+
+    env:
+      SITE_URL: ${{ vars.SITE_URL }}
+      SANITY_STUDIO_DATASET: ${{ secrets.SANITY_STUDIO_DATASET }}
+      SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_STUDIO_PROJECT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: site/.nvmrc
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: site/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('site/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        working-directory: site
+        run: npm ci
+
+      - name: Cache jampack output
+        uses: actions/cache@v4
+        with:
+          path: site/.jampack
+          key: jampack-${{ github.run_id }}
+          restore-keys: |
+            jampack
+
+      - name: Build site
+        working-directory: site
+        run: npm run build
+
+      - name: Deploy site
+        working-directory: site
+        run: npm run deploy

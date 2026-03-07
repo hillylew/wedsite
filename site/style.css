@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+  }
+
+  [x-cloak] {
+    @apply !hidden;
+  }
+
+  /* Add fade page transition if reduced motion is not set */
+  @media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+      navigation: auto;
+    }
+  }
+
+  h1 {
+  }
+
+  h2 {
+  }
+
+  h3 {
+  }
+
+  h4 {
+  }
+
+  p {
+  }
+
+  blockquote {
+  }
+
+  table {
+  }
+
+  details {
+  }
+
+  ul {
+  }
+
+  ol {
+  }
+
+  a {
+    @apply transition-colors duration-150;
+  }
+}
+
+@layer components {
+  .button {
+  }
+}
+
+@layer utilities {
+  .stretched-link::after {
+    content: "";
+    @apply absolute inset-0;
+  }
+}

@@ -1,0 +1,6 @@
+<a
+  href="#main"
+  class="sr-only block border-b border-michigan-blue bg-michigan-maize text-center text-michigan-blue no-underline focus:not-sr-only"
+>
+  <p class="p-3">Skip to main content</p>
+</a>

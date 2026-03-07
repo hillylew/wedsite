@@ -1,0 +1,15 @@
+---
+layout: base
+---
+
+<main id="main">
+  <article>
+    <h1 @text="homepage.title"></h1>
+
+    <template webc:if="homepage.sections" webc:nokeep>
+      <page-sections :@sections="homepage.sections"></page-sections>
+    </template>
+
+    <template @raw="content" webc:nokeep></template>
+  </article>
+</main>

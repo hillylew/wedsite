@@ -1,0 +1,51 @@
+<template webc:ignore>
+	How you would use this component:
+
+	<pagination
+		webc:if="pagination.hrefs"
+		:@page="page"
+		:@pagination="pagination"
+	></pagination>
+</template>
+
+<ul webc:if="pagination.pages.length > 1" class="flex items-center">
+	<li webc:if="pagination.href.first && pagination.href.previous">
+		<a :href="pagination.href.first">« First</a>
+	</li>
+
+	<li webc:if="pagination.href.previous">
+		<a
+			:href="pagination.href.previous"
+			class="flex items-center hover:underline"
+		>
+			‹ Previous
+		</a>
+	</li>
+
+	<li webc:for="(item, index) of pagination.pages">
+		<a
+			webc:if="page.url != pagination.hrefs[index]"
+			:href="pagination.hrefs[index]"
+			@attributes="({title: 'Go to page ' + (index+1)})"
+		>
+			<span class="hidden">Page&nbsp;</span>
+			<template @text="index+1" webc:nokeep></template>
+		</a>
+
+		<div webc:else>
+			<span class="hidden">Page&nbsp;</span>
+			<template @text="index+1" webc:nokeep></template>
+		</div>
+	</li>
+
+	<li webc:if="pagination.href.next">
+		<a :href="pagination.href.next"> Next › </a>
+	</li>
+
+	<li
+		webc:if="pagination.href.last && pagination.href.next"
+		class="hidden sm:block"
+	>
+		<a :href="pagination.href.last">Last »</a>
+	</li>
+</ul>
