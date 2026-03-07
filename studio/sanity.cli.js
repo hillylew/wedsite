@@ -3,6 +3,7 @@ import { defineCliConfig } from "sanity/cli";
 export default defineCliConfig({
   deployment: {
     appId: process.env.SANITY_STUDIO_APP_ID,
+    studioHost: process.env.SANITY_STUDIO_HOST,
   },
 
   api: {
