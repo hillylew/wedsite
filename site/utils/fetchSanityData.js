@@ -28,7 +28,9 @@ export default async function (
   const data = await client.fetch(groqQuery);
 
   // Save data in cache.
+  if (data) {
   await asset.save(data, "json");
+  }
 
   // Return the results.
   return data;
