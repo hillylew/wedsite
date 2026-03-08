@@ -43,6 +43,21 @@ export default {
     },
 
     {
+      name: "heroImage",
+      title: "Hero Background Image",
+      type: "image",
+      group: "hero",
+      validation: (Rule) => Rule.required(),
+    },
+
+    {
+      ...backgroundColor,
+      title: "Hero Background Color",
+      group: "hero",
+      validation: (Rule) => Rule.required(),
+    },
+
+    {
       ...sections,
       group: "sections",
     },

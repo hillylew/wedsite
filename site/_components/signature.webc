@@ -2,6 +2,8 @@
   <img
     :src="imageHelper(settings.signature)"
     :alt="`${settings.siteTitle} signature`"
+     width="347" 
+     height="63"
   />
 </a>
 

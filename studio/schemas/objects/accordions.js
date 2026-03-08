@@ -1,3 +1,4 @@
+import backgroundColor from "./backgroundColor";
 import { GiAccordion } from "react-icons/gi";
 
 export default {
@@ -12,6 +13,10 @@ export default {
       type: "array",
       validation: (Rule) => Rule.required(),
       of: [{ type: "accordion" }],
+    },
+    {
+      ...backgroundColor,
+      validation: (Rule) => Rule.required(),
     },
   ],
 

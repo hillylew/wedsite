@@ -4,7 +4,7 @@ import { schemaTypes } from "./schemas";
 import { deskStructure } from "./deskStructure";
 import { structureTool } from "sanity/structure";
 import { media } from "sanity-plugin-media";
-import { table } from "@sanity/table";
+import { simplerColorInput } from "sanity-plugin-simpler-color-input";
 
 // Define singleton types.
 const singletonTypes = new Set([
@@ -33,7 +33,7 @@ export default defineConfig({
     structureTool({ structure: deskStructure }),
     media(),
     visionTool(),
-    table()
+    simplerColorInput(),
   ],
 
   schema: {

@@ -1,3 +1,4 @@
+import backgroundColor from "./backgroundColor";
 import { BiJoystickButton } from "react-icons/bi";
 
 export default {
@@ -11,6 +12,10 @@ export default {
       title: "Buttons",
       type: "array",
       of: [{ type: "link" }],
+    },
+    {
+      ...backgroundColor,
+      validation: (Rule) => Rule.required(),
     },
   ],
   preview: {

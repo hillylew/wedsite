@@ -1,43 +1,46 @@
-<header>
-  <signature :@settings="settings"></signature>
+<div class="bg-twilight ~py-6/12">
+  <header class="container flex items-center justify-between">
+    <signature :@settings="settings"></signature>
 
-  <nav class="hidden lg:block">
-    <ul>
-      <li webc:for="item of navigation">
-        <a
-          :href="`/${item.slug}`"
-          :class="page.url.includes('/' + item.slug) && 'underline'"
-          @text="item.title"
-        ></a>
-      </li>
-    </ul>
-  </nav>
+    <nav class="hidden lg:block">
+      <ul>
+        <li webc:for="item of navigation">
+          <a
+            class="hover:underline text-grape"
+            :href="`/${item.slug}`"
+            :class="page.url.includes('/' + item.slug) && 'underline'"
+            @text="item.title"
+          ></a>
+        </li>
+      </ul>
+    </nav>
 
-  <div
-    x-data="{ open: false }"
-    x-on:keydown.escape.window="open = false"
-    x-trap.inert.noscroll="open"
-    class="lg:hidden"
-  >
-    <button
-      x-bind:aria-expanded="open"
-      x-on:click="open = !open"
-      aria-label="Open navigation menu"
-      aria-controls="mobile-menu"
-      type="button"
-      class="p-4 border border-black"
+    <div
+      x-data="{ open: false }"
+      x-on:keydown.escape.window="open = false"
+      x-trap.inert.noscroll="open"
+      class="lg:hidden"
     >
-      <span>Toggle menu</span>
-    </button>
+      <button
+        x-bind:aria-expanded="open"
+        x-on:click="open = !open"
+        aria-label="Open navigation menu"
+        aria-controls="mobile-menu"
+        type="button"
+        class="p-4 border border-black"
+      >
+        <span>Toggle menu</span>
+      </button>
 
-    <div id="mobile-menu" x-cloak x-show="open">
-      <nav>
-        <ul>
-          <li webc:for="item of navigation">
-            <a @text="item.title" :href="`/${item.slug}`"></a>
-          </li>
-        </ul>
-      </nav>
+      <div id="mobile-menu" x-cloak x-show="open">
+        <nav>
+          <ul>
+            <li webc:for="item of navigation">
+              <a @text="item.title" :href="`/${item.slug}`"></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
+</div>

@@ -1,49 +1,31 @@
-<footer>
-  <img src="/img/blockm.svg" alt="U-M Block M" />
+<div class="bg-twilight ~py-6/12">
+  <footer class="container text-xs">
+    <address webc:if="contactInfo.address">
+      <p @text="contactInfo.address"></p>
 
-  <address>
-    <p @text="contactInfo.address"></p>
+      <p
+        @text="`${contactInfo.city}, ${contactInfo.state} ${contactInfo.zip}`"
+      ></p>
+    </address>
 
-    <p
-      @text="`${contactInfo.city}, ${contactInfo.state} ${contactInfo.zip}`"
-    ></p>
-  </address>
+    <a webc:if="contactInfo.phone" :href="`tel:${contactInfo.phone}`" @text="contactInfo.phone"></a>
+    <a webc:if="contactInfo.email" :href="`mailto:${contactInfo.email}`" @text="contactInfo.email"></a>
 
-  <a :href="`tel:${contactInfo.phone}`" @text="contactInfo.phone"></a>
-  <a :href="`mailto:${contactInfo.email}`" @text="contactInfo.email"></a>
+    <ul webc:if="contactInfo.socials">
+      <li webc:for="social of contactInfo.socials">
+        <a :href="social.url">
+          <span @text="social.name"></span>
+          <img
+            webc:if="social.icon"
+            :src="imageHelper(social.icon)"
+            :alt="social.name"
+          />
+        </a>
+      </li>
+    </ul>
 
-  <ul webc:if="contactInfo.socials">
-    <li webc:for="social of contactInfo.socials">
-      <a :href="social.url">
-        <span @text="social.name"></span>
-        <img
-          webc:if="social.icon"
-          :src="imageHelper(social.icon)"
-          :alt="social.name"
-        />
-      </a>
-    </li>
-  </ul>
-
-  <p>
-    <span @text="`&copy ${currentYear()}`"></span>
-
-    <a href="https://regents.umich.edu" class="underline">
-      Regents of the University of Michigan
-    </a>
-  </p>
-
-  <p>
-    <span>Site produced by</span>
-
-    <a href="https://creative.umich.edu" class="underline">
-      Michigan Creative
-    </a>
-
-    <span>, a unit of the</span>
-
-    <a href="https://vpcomm.umich.edu" class="underline">
-      Office of the Vice President for Communications
-    </a>
-  </p>
-</footer>
+    <p>
+      <span>Site produced by <a class="underline text-grape hover:no-underline" href="https://github.com/hillylew">Hillary Lewandowski</a></span>
+    </p>
+  </footer>
+</div>
