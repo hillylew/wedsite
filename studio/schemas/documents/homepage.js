@@ -1,3 +1,4 @@
+import backgroundColor from "../objects/backgroundColor";
 import sections from "../objects/sections";
 import groups from "../../lib/pageGroups";
 import seo from "../objects/seo";
@@ -25,6 +26,21 @@ export default {
       name: "heroHeading",
       title: "Heading",
       type: "string",
+      group: "hero",
+      validation: (Rule) => Rule.required(),
+    },
+
+    {
+      name: "heroImage",
+      title: "Hero Background Image",
+      type: "image",
+      group: "hero",
+      validation: (Rule) => Rule.required(),
+    },
+
+    {
+      ...backgroundColor,
+      title: "Hero Background Color",
       group: "hero",
       validation: (Rule) => Rule.required(),
     },

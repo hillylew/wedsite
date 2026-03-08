@@ -1,3 +1,4 @@
+import backgroundColor from "./backgroundColor";
 import { FaGripLines } from "react-icons/fa";
 
 export default {
@@ -14,6 +15,10 @@ export default {
       options: {
         list: [{ title: "Line break", value: "lineBreak" }],
       },
+    },
+    {
+      ...backgroundColor,
+      validation: (Rule) => Rule.required(),
     },
   ],
   preview: {

@@ -1,3 +1,4 @@
+import backgroundColor from "./backgroundColor";
 import { BsChatLeftQuote } from "react-icons/bs";
 
 export default {
@@ -16,6 +17,10 @@ export default {
       name: "attribution",
       title: "Attribution",
       type: "string",
+    },
+    {
+      ...backgroundColor,
+      validation: (Rule) => Rule.required(),
     },
   ],
 

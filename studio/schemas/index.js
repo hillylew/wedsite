@@ -7,6 +7,7 @@ import siteSettings from "./documents/siteSettings";
 
 import accordion from "./objects/accordion";
 import accordions from "./objects/accordions";
+import backgroundColor from "./objects/backgroundColor";
 import buttonGroup from "./objects/buttonGroup";
 import contentBreak from "./objects/contentBreak";
 import link from "./objects/link";
@@ -15,11 +16,11 @@ import navigationSection from "./objects/navigationSection";
 import quote from "./objects/quote";
 import richImage from "./objects/richImage";
 import richText from "./objects/richText";
-import tableSection from "./objects/tableSection";
 
 export const schemaTypes = [
   accordion,
   accordions,
+  backgroundColor,
   buttonGroup,
   contactInfo,
   contentBreak,
@@ -34,5 +35,4 @@ export const schemaTypes = [
   richImage,
   richText,
   siteSettings,
-  tableSection,
 ];

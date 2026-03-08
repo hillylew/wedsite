@@ -1,3 +1,6 @@
-<section>
-  <div @html="portableToHTML(text)"></div>
+<section class="~py-6/12">
+  <div 
+    class="container" 
+    @html="portableToHTML(text)"
+  ></div>
 </section>
