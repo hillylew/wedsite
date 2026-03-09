@@ -1,4 +1,5 @@
 import backgroundColor from "./backgroundColor";
+import richImage from "./richImage";
 import { BiJoystickButton } from "react-icons/bi";
 
 export default {
@@ -16,6 +17,9 @@ export default {
     {
       ...backgroundColor,
       validation: (Rule) => Rule.required(),
+    },
+    {
+      ...richImage,
     },
   ],
   preview: {

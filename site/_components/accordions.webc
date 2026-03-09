@@ -35,7 +35,7 @@
       <span @text="accordion.heading"></span>
     </summary>
 
-    <div @html="portableToHTML(accordion.richText.content)"></div>
+    <div @html="portableToHTML(accordion.content)"></div>
   </details>
 
   <script webc:keep>

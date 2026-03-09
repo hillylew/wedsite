@@ -1,3 +1,4 @@
+import backgroundColor from "../objects/backgroundColor";
 import seo from "../objects/seo";
 import { RiPagesLine } from "react-icons/ri";
 import { isSlugUnique } from "../../lib/isSlugUnique";

@@ -7,7 +7,11 @@ layout: base
 
   <main id="main">
     <article>
-      <h1 @text="title"></h1>
+      <page-hero
+        :@image="heroImage"
+        :@title="title"
+        :@bgcolor="bgColor"
+      ></page-hero>
 
       <template webc:if="sections" webc:nokeep>
         <page-sections :@sections="sections"></page-sections>

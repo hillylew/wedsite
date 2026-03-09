@@ -1,4 +1,3 @@
-import backgroundColor from "./backgroundColor";
 import { BsCardImage } from "react-icons/bs";
 
 export default {
@@ -30,10 +29,6 @@ export default {
           },
         },
       ],
-    },
-    {
-      ...backgroundColor,
-      validation: (Rule) => Rule.required(),
     },
   ],
 
