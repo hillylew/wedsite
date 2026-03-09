@@ -1,4 +1,5 @@
 import backgroundColor from "./backgroundColor";
+import richImage from "./richImage";
 import { BsChatLeftQuote } from "react-icons/bs";
 
 export default {
@@ -21,6 +22,9 @@ export default {
     {
       ...backgroundColor,
       validation: (Rule) => Rule.required(),
+    },
+    {
+      ...richImage,
     },
   ],
 

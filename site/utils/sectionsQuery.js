@@ -15,6 +15,11 @@ export default `
             "slug": page->slug.current,
           },
         },
+        _type == "richImage" => {
+          ...,
+          "altText": image.asset->altText,
+          "description": image.asset->description,
+        }
       },
     },
   },

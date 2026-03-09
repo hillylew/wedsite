@@ -1,4 +1,5 @@
 import backgroundColor from "./backgroundColor";
+import richImage from "./richImage";
 import { BsBodyText } from "react-icons/bs";
 
 export default {
@@ -17,7 +18,7 @@ export default {
           styles: [
             { title: "Heading 2", value: "h2" },
             { title: "Heading 3", value: "h3" },
-            { title: "Heading 4", value: "h4" },
+            { title: "Heading 4", value: "h4" }
           ],
         },
       ],
@@ -25,6 +26,9 @@ export default {
     {
       ...backgroundColor,
       validation: (Rule) => Rule.required(),
+    },
+    {
+      ...richImage
     },
   ],
 };

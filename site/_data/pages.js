@@ -8,6 +8,9 @@ export default async function (configData) {
       _updatedAt,
       title, 
       slug, 
+      heroHeading,
+      heroImage,
+      "bgColor": backgroundColor.backgroundColor.value,
       ${sectionsQuery}
       seo,
     }

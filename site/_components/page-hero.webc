@@ -1,0 +1,17 @@
+<script webc:setup>
+	async function backgroundImage(image) {
+		let heroImage = await imageHelper(image, 1360);
+		return "background-image:url(" + heroImage + ")";
+	}
+</script>
+
+<div class="relative hero-area" 
+:class="bgcolor"
+>
+	<div class="container ~py-8/16 flex flex-col sm:flex-row">
+		<div class="bg-no-repeat bg-center h-[250px] sm:bg-left sm:w-1/2"
+		:style="backgroundImage(image)"
+		></div>
+		<h1 class="text-center sm:text-left sm:w-1/2" @text="title"></h1>
+	</div>
+</div>

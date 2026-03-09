@@ -1,4 +1,5 @@
 import backgroundColor from "./backgroundColor";
+import richImage from "./richImage";
 import { GiAccordion } from "react-icons/gi";
 
 export default {
@@ -17,6 +18,9 @@ export default {
     {
       ...backgroundColor,
       validation: (Rule) => Rule.required(),
+    },
+    {
+      ...richImage,
     },
   ],
 

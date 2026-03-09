@@ -5,6 +5,7 @@ export default async function (configData) {
   const query = `
     *[_type == "homepage"] {
       ...,
+      "bgColor": backgroundColor.backgroundColor.value,
       ${sectionsQuery}
     }[0]
   `;
