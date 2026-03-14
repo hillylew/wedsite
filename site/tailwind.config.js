@@ -3,7 +3,7 @@ import fluid, { extract, screens, fontSize } from "fluid-tailwind";
 
 module.exports = {
   content: {
-    files: ["**/*.webc", "./.eleventy.js"],
+    files: ["**/*.webc", "../studio/schemas/**/*.js", "./.eleventy.js"],
     extract,
   },
 

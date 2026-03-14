@@ -1,14 +1,14 @@
 <script webc:setup>
   function alignmentClasses(alignment) {
     if (alignment === "left") {
-      return "sm:float-left sm:mr-8 mb-8";
+      return "sm:float-left sm:mr-8 mb-8 ~py-6/12 first-of-type:~pt-12/24";
     }
 
     if (alignment === "right") {
-      return "sm:float-right sm:ml-8 mb-8";
+      return "sm:float-right sm:ml-8 mb-8 ~py-6/12 first-of-type:~pt-12/24";
     }
 
-    return "clear-both";
+    return "clear-both py-0";
   }
 </script>
 

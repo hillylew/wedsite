@@ -3,7 +3,7 @@
     <signature :@settings="settings"></signature>
 
     <nav class="hidden lg:block">
-      <ul>
+      <ul class="flex items-center gap-6 text-xl">
         <li webc:for="item of navigation">
           <a
             class="hover:underline text-grape"
@@ -34,7 +34,7 @@
 
       <div id="mobile-menu" x-cloak x-show="open">
         <nav>
-          <ul>
+          <ul class="flex flex-col gap-6 text-xl">
             <li webc:for="item of navigation">
               <a @text="item.title" :href="`/${item.slug}`"></a>
             </li>

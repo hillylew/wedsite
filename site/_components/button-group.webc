@@ -1,7 +1,9 @@
-<section>
-  <ul>
-    <li webc:for="button of buttons">
-      <a :href="button.url || `/${button.slug}`" @text="button.label"></a>
-    </li>
-  </ul>
+<section class="~py-6/12 first-of-type:~pt-12/24"" :class="bgcolor">
+  <div class="container">
+    <ul>
+      <li webc:for="button of buttons">
+        <a :href="button.url || `/${button.slug}`" @text="button.label"></a>
+      </li>
+    </ul>
+  </div>
 </section>

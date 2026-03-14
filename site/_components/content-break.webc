@@ -1,1 +1,1 @@
-<hr webc:if="breakStyle === 'lineBreak'" />
+<hr webc:if="breakStyle === 'lineBreak'" class="~py-6/12" :class="bgcolor" />

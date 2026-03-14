@@ -116,6 +116,16 @@
 @layer components {
   .button {
   }
+
+  .bg-twilight {
+    @apply text-grape;
+  }
+  .bg-grape {
+    @apply text-gold;
+  }
+  .bg-tawny-port {
+    @apply text-white;
+  }
 }
 
 @layer utilities {
