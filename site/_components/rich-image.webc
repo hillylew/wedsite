@@ -13,8 +13,17 @@
 </script>
 
 <section :class="alignmentClasses(alignment)">
-  <figure class="table">
-    <img :src="imageHelper(image)" :alt="imageAlt" />
+  <figure 
+    class="table" 
+    x-data="{ visible: false }" 
+    x-intersect.threshold.25.once="visible = true" 
+  >
+    <img 
+      :src="imageHelper(image)" 
+      :alt="imageAlt" 
+      x-bind:class="visible && '!opacity-100'"
+      class="duration-500 motion-safe:opacity-0 transition-opacity"
+    />
 
     <figcaption
       webc:if="caption"

@@ -1,11 +1,16 @@
 <section x-data="accordions" class="~py-6/12 first-of-type:~pt-12/24"" :class="bgcolor">
-  <div class="container">
-    <h2 webc:if="heading" @text="heading"></h2>
+  <div class="container" x-data="{ visible: false }" x-intersect.threshold.25.once="visible = true">
+    <h2 webc:if="heading" 
+      @text="heading"
+      class="motion-safe:opacity-0 transition-opacity duration-500 delay-300"
+      x-bind:class="visible && '!opacity-100'"
+    ></h2>
 
     <details
       webc:for="accordion of accordions"
       :id="slugify(accordion.heading)"
-      class="group border border-black my-4"
+      class="group border border-black my-4 first:mt-0 last:mb-0 motion-safe:opacity-0 transition-opacity duration-500 delay-300"
+      x-bind:class="visible && '!opacity-100'"
     >
       <summary class="flex justify-between gap-6 cursor-pointer list-none items-center">
         <span class="text-2xl ~py-6/8 px-6" @text="accordion.heading"></span>

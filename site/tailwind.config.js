@@ -15,6 +15,10 @@ module.exports = {
       padding: "1rem",
     },
     extend: {
+      animation: {
+        "clip-scale":
+          "clip-scale 1s forwards 0.25s cubic-bezier(.46,-0.05,.07,1.01)",
+      },
       colors: {
         "twilight": "#dcbfd2",
         "periwinkle": "#7987d6",
@@ -26,8 +30,22 @@ module.exports = {
         transparent: "transparent",
       },
       fontFamily: {
-        sans: ["Helvetica", "sans-serif"],
+        roboto: ["Roboto", "sans-serif"],
         cursive: ["Arizonia", "cursive"],
+      },
+      keyframes: {
+        "clip-scale": {
+          "0%": {
+            "clip-path": "inset(100% 100% 0 0)",
+            transform: "scale(1.25)",
+            opacity: 1,
+          },
+          "100%": {
+            "clip-path": "inset(0 0 0 0)",
+            transform: "scale(1)",
+            opacity: 1,
+          },
+        },
       },
     },
   },

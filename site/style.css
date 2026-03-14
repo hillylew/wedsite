@@ -3,19 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  @font-face {
-  }
-
-  [x-cloak] {
-    @apply !hidden;
-  }
-
-  /* Add fade page transition if reduced motion is not set */
-  @media (prefers-reduced-motion: no-preference) {
-    @view-transition {
-      navigation: auto;
-    }
-  }
 
   /* arizonia-regular - latin */
   @font-face {
@@ -74,6 +61,21 @@
     src: url('../fonts/roboto-mono-v31-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
   }
 
+  [x-cloak] {
+    @apply !hidden;
+  }
+
+  /* Add fade page transition if reduced motion is not set */
+  @media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+      navigation: auto;
+    }
+  }
+
+  body {
+    @apply font-roboto;
+  }
+
   h1 {
     @apply font-cursive text-7xl;
   }
@@ -91,6 +93,15 @@
   }
 
   p {
+    @apply my-4;
+  }
+
+  p:first-of-type {
+    @apply mt-0;
+  }
+
+  p:last-of-type {
+    @apply mb-0;
   }
 
   blockquote {
@@ -108,13 +119,18 @@
   ol {
   }
 
+  li {
+    @apply my-1;
+  }
+
   a {
-    @apply transition-colors duration-150;
+    @apply font-semibold hover:underline transition-colors duration-150;
   }
 }
 
 @layer components {
   .button {
+    @apply  block max-w-[350px] px-6 py-3 my-4 bg-transparent border-2 border-gold rounded-lg transition-colors duration-150 hover:no-underline hover:bg-gold;
   }
 
   .bg-twilight {
@@ -132,5 +148,11 @@
   .stretched-link::after {
     content: "";
     @apply absolute inset-0;
+  }
+  .clip-scale {
+    @apply opacity-0;
+  }
+  .clip-scale.visible {
+    @apply animate-clip-scale;
   }
 }
