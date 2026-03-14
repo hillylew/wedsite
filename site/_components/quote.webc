@@ -1,11 +1,23 @@
-<section class="~py-6/12 first-of-type:~pt-12/24"" :class="bgcolor">
-  <div class="container">
-    <blockquote class="max-w-sm relative py-2 px-4">
+<section class="~py-6/12 first-of-type:~pt-12/24" :class="bgcolor">
+  <div 
+    class="flex flex-col justify-center" 
+    x-data="{ visible: false }" 
+    x-intersect.threshold.25.once="visible = true"
+  >
+    <blockquote 
+      class="mx-auto max-w-sm relative py-6 px-8 duration-500 motion-safe:opacity-0 transition-opacity"
+      x-bind:class="visible && '!opacity-100'"
+    >
       <span class="absolute top-0 left-0 font-cursive ~text-4xl/7xl">"</span>
       <span class="~text-2xl/5xl" @text="quote"></span>
       <span class="font-cursive ~text-4xl/7xl">"</span>
     </blockquote>
 
-    <p class="~text-2xl/4xl font-cursive pl-6" webc:if="section.attribution" @text="section.attribution"></p>
+    <p 
+      class="mx-auto ~text-2xl/4xl font-cursive pl-6 duration-500 motion-safe:opacity-0 transition-opacity" 
+      webc:if="section.attribution" 
+      @text="section.attribution"
+      x-bind:class="visible && '!opacity-100'"
+    ></p>
   </div>
 </section>

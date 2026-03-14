@@ -1,8 +1,17 @@
 <section class="~py-6/12 first-of-type:~pt-12/24"" :class="bgcolor">
-  <div class="container">
-    <ul>
+  <div 
+    class="container" 
+    x-data="{ visible: false }" 
+    x-intersect.threshold.25.once="visible = true"
+  >
+    <ul class="flex flex-wrap ~gap-x-8/16">
       <li webc:for="button of buttons">
-        <a :href="button.url || `/${button.slug}`" @text="button.label"></a>
+        <a 
+          :href="button.url || `/${button.slug}`" 
+          @text="button.label"
+          class="button duration-500 motion-safe:opacity-0 transition-opacity"
+          x-bind:class="visible && '!opacity-100'"
+        ></a>
       </li>
     </ul>
   </div>

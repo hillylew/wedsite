@@ -1,4 +1,4 @@
-<a href="/">
+<a class="relative z-20" href="/">
   <img
     :src="imageHelper(settings.signature)"
     :alt="`${settings.siteTitle} signature`"

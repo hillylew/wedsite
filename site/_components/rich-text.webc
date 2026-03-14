@@ -1,12 +1,29 @@
 <section class="~py-6/12 first-of-type:~pt-12/24">
-  <div class="container flex flex-col justify-between ~gap-8/16" :class="alignment == 'right' ? 'md:flex-row-reverse' : 'md:flex-row'">
-    <div webc:if="image" class="md:w-1/2">
-      <img :src="imageHelper(image.image, 640)" :alt="alt" class="object-cover w-full h-full" />
+  <div 
+    class="container flex flex-col justify-between ~gap-8/16" 
+    :class="alignment == 'right' ? 'md:flex-row-reverse' : 'md:flex-row'"
+  >
+    <div webc:if="image" 
+      class="md:w-1/2"
+      x-data="{ visible: false }" 
+      x-intersect.threshold.25.once="visible = true"
+    >
+      <img 
+        :src="imageHelper(image.image, 640)" 
+        :alt="alt" 
+      />
     </div>
     <div 
-      class="[&>ul]:list-disc [&>ul]:pl-4 [&>ol]:list-decimal [&>ol]:pl-4 max-w-lg" 
       :class="image ? 'md:w-2/3' : ''"
-      @html="portableToHTML(text)"
-    ></div>
+      x-data="{ visible: false }" 
+      x-intersect.threshold.25.once="visible = true"
+    >
+      <div
+        x-bind:class="visible && '!opacity-100'"
+        class="object-cover w-full h-full duration-500 motion-safe:opacity-0 transition-opacity [&>ul]:list-disc [&>ul]:pl-4 [&>ol]:list-decimal [&>ol]:pl-4 max-w-lg"
+        @html="portableToHTML(text)"
+      >
+      </div>
+    </div>
   </div>
 </section>
