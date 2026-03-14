@@ -4,21 +4,29 @@
     <accordions
       :@heading="section.heading"
       :@accordions="section.accordions"
+      :@bgcolor="section.bgColor"
     ></accordions>
   </template>
 
   <template webc:if="section._type === 'buttonGroup'" webc:nokeep>
-    <button-group :@buttons="section.buttons"></button-group>
+    <button-group 
+      :@buttons="section.buttons"
+      :@bgcolor="section.bgColor"
+    ></button-group>
   </template>
 
   <template webc:if="section._type === 'contentBreak'" webc:nokeep>
-    <content-break :@break-style="section.style"></content-break>
+    <content-break 
+      :@break-style="section.style" 
+      :@bgcolor="section.bgColor"
+    ></content-break>
   </template>
 
   <template webc:if="section._type === 'quote'" webc:nokeep>
     <quote
       :@quote="section.quote"
       :@attribution="section.attribution"
+      :@bgcolor="section.bgColor"
     ></quote>
   </template> 
 
@@ -32,7 +40,12 @@
   </template>
 
   <template webc:if="section._type === 'richText'" webc:nokeep>
-    <rich-text :@text="section.content"></rich-text>
+    <rich-text 
+      :@text="section.content"
+      :@image="section.richImage"
+      :@alignment="section.richImageAlign"
+      :@alt="section.richImageAltText"
+    ></rich-text>
   </template>
 
   <template webc:if="section._type === 'tableSection'" webc:nokeep>

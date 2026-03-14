@@ -3,6 +3,9 @@ export default `
     ...,
     "imageAltText": image.asset->altText,
     "imageCaption": image.asset->description,
+    "bgColor": backgroundColor.backgroundColor.value,
+    "richImageAlt": richImage.image.asset->altText,
+    "richImageAlign": richImage.image.alignment,
 
     _type == "richText" => {
       ...,

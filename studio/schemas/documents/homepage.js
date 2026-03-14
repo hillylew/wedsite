@@ -34,6 +34,9 @@ export default {
       name: "heroImage",
       title: "Hero Background Image",
       type: "image",
+      options: {
+        hotspot: true,
+      },
       group: "hero",
       validation: (Rule) => Rule.required(),
     },
