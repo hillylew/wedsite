@@ -20,6 +20,7 @@ export default {
     { type: "contentBreak" },
     { type: "quote" },
     { type: "richImage" },
-    { type: "richText" }
+    { type: "richText" },
+    { type: "rsvpForm" }
   ],
 };

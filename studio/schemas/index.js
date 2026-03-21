@@ -16,6 +16,7 @@ import navigationSection from "./objects/navigationSection";
 import quote from "./objects/quote";
 import richImage from "./objects/richImage";
 import richText from "./objects/richText";
+import rsvpForm from "./objects/rsvpForm";
 
 export const schemaTypes = [
   accordion,
@@ -34,5 +35,6 @@ export const schemaTypes = [
   redirect,
   richImage,
   richText,
+  rsvpForm,
   siteSettings,
 ];
