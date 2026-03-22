@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 import fluid, { extract, screens, fontSize } from "fluid-tailwind";
+import forms from "@tailwindcss/forms";
 
 module.exports = {
   content: {
@@ -50,5 +51,5 @@ module.exports = {
     },
   },
 
-  plugins: [fluid],
+  plugins: [fluid, forms],
 };
