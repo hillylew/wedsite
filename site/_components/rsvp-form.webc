@@ -1,0 +1,170 @@
+<section class="~py-6/12 first-of-type:~pt-12/24">
+  <div
+    class="container flex justify-between ~gap-8/16"
+    :class="alignment == 'right' ? 'flex-col-reverse md:flex-row-reverse' : 'flex-col md:flex-row'"
+  >
+    <div
+      webc:if="image"
+      class="md:w-1/2"
+      x-data="{ visible: false }"
+      x-intersect.threshold.25.once="visible = true"
+    >
+      <img :src="imageHelper(image.image, 640)" :alt="alt" />
+    </div>
+    <div
+      :class="image ? 'md:w-2/3' : ''"
+      x-data="{ visible: false }"
+      x-intersect.threshold.25.once="visible = true"
+    >
+      <form
+        class="form-contents"
+        novalidate=""
+        x-data="{ showGuest2Fields: 'No' }"
+      >
+        <fieldset class="form-item fields name">
+          <legend>Guest 1 (You)</legend>
+          <div class="field first-name">
+            <label for="guest-1-fname">
+              First Name
+            </label>
+            <input
+              id="guest1fname"
+              name="guest1fname"
+              type="text"
+              value=""
+            />
+          </div>
+          <div class="field last-name">
+            <label for="guest-1-lname">
+              Last Name </label
+            ><input
+              id="guest1lname"
+              name="guest1lname"
+              type="text"
+              value=""
+            />
+          </div>
+        </fieldset>
+        <div class="form-item field select required">
+          <label for="guest-1-dinner-choice">
+            Guest 1 dinner choice
+          </label>
+          <select
+            id="guest1dinner"
+            name="guest1dinner"
+            required=""
+          >
+            <option value="Select an option" disabled="" hidden="">
+              Select an option
+            </option>
+            <option value="Chicken">Chicken</option>
+            <option value="Fish">Fish</option>
+            <option value="Veggie">Veggie</option>
+          </select>
+        </div>
+        <div
+          class="form-item field textarea required"
+        >
+          <label for="guest1allergies">
+            Guest 1 food allergies
+          </label>
+          <p class="description">Gluten, Dairy, Shellfish, Peanuts, etc.</p>
+          <textarea
+            id="guest1allergies"
+            name="guest1allergies"
+          ></textarea>
+        </div>
+        <div class="form-item field select required">
+          <label for="select-field">
+            Will you be bringing a guest?
+          </label>
+          <select
+            id="bringguest"
+            name="bringguest"
+            required=""
+            x-model="showGuest2Fields"
+          >
+            <option value="Select an option" disabled="" hidden="">
+              Select an option
+            </option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+        <fieldset
+          class="form-item fields name"
+          x-cloak
+          x-transition
+          x-show="showGuest2Fields == 'Yes'"
+        >
+          <legend>Guest 2</legend>
+          <div class="field first-name">
+            <label for="guest-2-fname">First Name</label
+            ><input
+              id="guest2fname"
+              name="guest2fname"
+              type="text"
+              value=""
+            />
+          </div>
+          <div class="field last-name">
+            <label for="guest-2-lname">Last Name</label
+            ><input
+              id="guest2lname"
+              name="guest2lname"
+              type="text"
+              value=""
+            />
+          </div>
+        </fieldset>
+        <div
+          class="form-item field select required"
+          x-cloak
+          x-transition
+          x-show="showGuest2Fields == 'Yes'"
+        >
+          <label for="guest-2-dinner-choice">
+            Guest 2 dinner choice
+          </label>
+          <select
+            id="guest2dinner"
+            name="guest2dinner"
+          >
+            <option value="Select an option">
+              Select an option
+            </option>
+            <option value="Chicken">Chicken</option>
+            <option value="Fish">Fish</option>
+            <option value="Veggie">Veggie</option>
+          </select>
+        </div>
+        <div
+          class="form-item field textarea required"
+          x-cloak
+          x-transition
+          x-show="showGuest2Fields == 'Yes'"
+        >
+          <label for="guest2allergies">
+            Guest 2 food allergies
+          </label>
+          <p class="description">Gluten, Dairy, Shellfish, Peanuts, etc.</p>
+          <textarea 
+            id="guest2allergies" 
+            name="guest2allergies"
+          ></textarea>
+        </div>
+        <div class="form-item field textarea">
+          <label for="song-request">
+            Got a song request for the DJ?
+          </label>
+          <p class="description">Let's boogie.</p>
+          <textarea
+            id="songrequest"
+            name="songrequest"
+          ></textarea>
+        </div>
+        <button type="submit" class="button">Submit</button>
+      </form>
+    </div>
+  </div>
+</section>

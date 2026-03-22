@@ -92,16 +92,61 @@
     @apply font-cursive text-2xl;
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
   p {
     @apply my-4;
   }
 
-  p:first-of-type {
+  h1:first-child,
+  h2:first-child,
+  h3:first-child,
+  h4:first-child,
+  p:first-of-type,
+  .form-item:first-child {
     @apply mt-0;
   }
 
-  p:last-of-type {
+  h1:last-child,
+  h2:last-child,
+  h3:last-child,
+  h4:last-child,
+  p:last-of-type,
+  .form-item:last-child {
     @apply mb-0;
+  }
+
+  form {
+    @apply max-w-lg;
+  }
+
+  fieldset {
+    @apply flex flex-col items-center flex-wrap gap-6 sm:flex-row sm:justify-between;
+  }
+
+  legend {
+    @apply w-full font-cursive text-5xl mb-4;
+  }
+
+  label {
+    @apply block font-bold text-xl;
+  }
+
+  .form-item {
+    @apply my-6;
+  }
+
+  input,
+  select,
+  textarea {
+    @apply w-full;
+  }
+
+  .first-name,
+  .last-name {
+    @apply w-full lg:w-[45%];
   }
 
   blockquote {

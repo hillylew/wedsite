@@ -48,6 +48,15 @@
     ></rich-text>
   </template>
 
+  <template webc:if="section._type === 'rsvpForm'" webc:nokeep>
+    <rsvp-form
+      :@bgcolor="section.bgColor"
+      :@image="section.richImage"
+      :@alignment="section.richImageAlign"
+      :@alt="section.richImageAltText"
+    ></rsvp-form>
+  </template>
+
   <template webc:if="section._type === 'tableSection'" webc:nokeep>
     <table-section
       :@rows="section.data.rows"
