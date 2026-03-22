@@ -17,7 +17,7 @@
       x-intersect.threshold.25.once="visible = true"
     >
       <form
-        action="/functions/rsvp"
+        action="/rsvp"
         class="form-contents"
         novalidate=""
         x-data="{ showGuest2Fields: 'No' }"
@@ -55,7 +55,7 @@
             name="guest1dinner"
             required=""
           >
-            <option value="Select an option" disabled="" hidden="">
+            <option value="Select an option">
               Select an option
             </option>
             <option value="Chicken">Chicken</option>
