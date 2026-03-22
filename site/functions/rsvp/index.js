@@ -38,7 +38,7 @@ async function getGoogleSheetsAccessToken(env) {
 async function addRow(payload, accessToken, env) {
 	try {
 		const response = await fetch(
-			`https://sheets.googleapis.com/v4/spreadsheets/${env.GOOGLE_SHEETS_SUBSCRIBERS_ID}/values/${env.GOOGLE_SHEETS_SUBSCRIBERS_PAGE}:append?valueInputOption=USER_ENTERED`,
+			`https://sheets.googleapis.com/v4/spreadsheets/${env.GOOGLE_SPREADSHEET_ID}/values/${env.GOOGLE_SHEETS_SUBSCRIBERS_PAGE}:append?valueInputOption=USER_ENTERED`,
 			{
 				method: 'POST',
 				headers: {
@@ -101,9 +101,7 @@ router.post('/post', async (request, env) => {
 
 router.all('/', () => new Response('404, not found!', { status: 404 }));
 
-export default {
-	async fetch(request, env) {
-		const response = await router.handle(request, env);
-		return response;
-	},
+export async function onRequest(request, env) {
+	const response = await router.handle(request, env);
+	return response;
 };
