@@ -4,7 +4,7 @@ import jwt from "@tsndr/cloudflare-worker-jwt";
 async function getJWTAccessToken(env) {
   const iat = Math.floor(Date.now() / 1000);
   const exp = iat + 3600;
-  const privateKey = env.GOOGLE_PRIVATE_KEY;
+  const privateKey = env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
   if (!privateKey) throw new Error("Missing GOOGLE_PRIVATE_KEY");
   if (!privateKey.startsWith("-----BEGIN PRIVATE KEY-----")) {
     throw new Error("Invalid private key format - must be PEM format starting with -----BEGIN PRIVATE KEY-----");
