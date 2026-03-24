@@ -17,8 +17,9 @@
       x-intersect.threshold.25.once="visible = true"
     >
       <form
-        action="/rsvp"
+        action="/rsvp-submit"
         class="form-contents"
+        method="post"
         novalidate=""
         x-data="{ showGuest2Fields: 'No' }"
       >
