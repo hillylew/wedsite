@@ -4,6 +4,26 @@ layout: base
 
 <main id="main">
   <article>
+
+    <div
+      x-data="{
+        showSuccess: false,
+        init() {
+          const urlParams = new URLSearchParams(window.location.search);
+          if (urlParams.get('rsvp') === 'success') {
+            this.showSuccess = true;
+            window.history.replaceState(null, null, window.location.pathname);
+          }
+        }
+      }"
+      x-show="showSuccess"
+      x-transition
+      class="rsvp-success-message bg-gold text-crete p-4 text-center"
+    >
+      <h2>Thank you!</h2>
+      <p>Your RSVP has been successfully recorded. We can't wait to celebrate with you!</p>
+    </div>
+
     <page-hero
       :@image="homepage.heroImage"
       :@title="title"
