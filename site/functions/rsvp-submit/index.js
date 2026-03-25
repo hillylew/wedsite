@@ -119,7 +119,7 @@ async function addRow(formData, accessToken, env) {
 }
 
 export async function onRequestGet(context) {
-  return Response.redirect("https://wedsite-dia.pages.dev", 302);
+  return Response.redirect(env.SITE_URL, 302);
 }
 
 export async function onRequestPost(context) {
@@ -132,7 +132,7 @@ export async function onRequestPost(context) {
       return new Response(`Error: ${result.error}`, { status: 500 });
     }
     // Redirect to homepage with success message
-    return Response.redirect("https://wedsite-dia.pages.dev/?rsvp=success", 302);
+    return Response.redirect(env.SITE_URL + "/?rsvp=success", 302);
   } catch (error) {
     return new Response(`Internal Server Error: ${error.message}`, { status: 500 });
   }
