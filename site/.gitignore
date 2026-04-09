@@ -3,6 +3,5 @@ _site/*
 .env
 .cache
 .jampack
-wrangler.toml
 
 !_site/.gitkeep
