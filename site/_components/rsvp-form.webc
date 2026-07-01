@@ -1,4 +1,111 @@
-<section class="~py-6/12 first-of-type:~pt-12/24">
+<template webc:type="11ty" 11ty:type="liquid" webc:if="invites">
+	<script webc:keep>
+		function filterInvites() {
+			return {
+        step: 1, 
+        totalSteps: 6,
+        submitted: false,
+        guest1fname: '',
+        guest1lname: '',
+        guest2fname: '',
+        showGuest2Fields: 'No',
+        allowsGuest2: false,
+				inviteList: `{{ invites | json }}`,
+
+				init() {
+					this.inviteList = JSON.parse(this.inviteList);
+				},
+
+				setGuest2FromInvite(invite) {
+          if (!invite?.guests?.length) {
+            this.guest2fname = '';
+            this.guest2lname = '';
+            this.allowsGuest2 = false;
+            this.showGuest2Fields = 'No';
+            return;
+          }
+
+          const matchedGuest = invite.guests.find((guest) => {
+            const guestFirstName = (guest.fname || '').trim().toLowerCase();
+            const guestLastName = (guest.lname || '').trim().toLowerCase();
+            const firstName = (this.guest1fname || '').trim().toLowerCase();
+            const lastName = (this.guest1lname || '').trim().toLowerCase();
+
+            const firstNameMatch = !firstName || guestFirstName.includes(firstName);
+            const lastNameMatch = !lastName || guestLastName.includes(lastName);
+
+            return firstNameMatch && lastNameMatch;
+          });
+
+          const otherGuest = invite.guests.find((guest) => guest !== matchedGuest) || invite.guests[1];
+
+          this.guest2fname = otherGuest?.fname || '';
+          this.guest2lname = otherGuest?.lname || '';
+          this.allowsGuest2 = invite.guests.length > 1 || invite.plusone === true;
+          this.showGuest2Fields = 'No';
+        },
+
+				get filteredInvites() {
+          const firstName = (this.guest1fname || '').trim().toLowerCase();
+          const lastName = (this.guest1lname || '').trim().toLowerCase();
+
+          if (!firstName && !lastName) {
+            this.submitted = false;
+            this.guest2fname = '';
+            this.guest2lname = '';
+            this.allowsGuest2 = false;
+            this.showGuest2Fields = 'No';
+            return this.inviteList;
+          }
+
+          this.submitted = true;
+
+          const matches = this.inviteList.filter((invite) => {
+            return invite.guests.some((guest) => {
+              const guestFirstName = (guest.fname || '').trim().toLowerCase();
+              const guestLastName = (guest.lname || '').trim().toLowerCase();
+
+              const firstNameMatch = !firstName || guestFirstName.includes(firstName);
+              const lastNameMatch = !lastName || guestLastName.includes(lastName);
+
+              return firstNameMatch && lastNameMatch;
+            });
+          });
+
+          if (matches.length) {
+            this.setGuest2FromInvite(matches[0]);
+          } else {
+            this.guest2fname = '';
+            this.guest2lname = '';
+            this.allowsGuest2 = false;
+            this.showGuest2Fields = 'No';
+          }
+
+          return matches;
+        },
+				nextStep() {
+          if (!this.allowsGuest2 && (this.step === 3 || this.step === 4 || this.step === 5)) {
+            this.step = 6;
+            return;
+          }
+
+          this.step++;
+        },
+
+				prevStep() {
+          if (!this.allowsGuest2 && (this.step === 4 || this.step === 5 || this.step === 6)) {
+            this.step = 3;
+            return;
+          }
+
+          this.step--;
+        },
+			};
+		}
+	</script>
+</template>
+
+<section class="~py-6/12 first-of-type:~pt-12/24" x-data="filterInvites()">
   <div
     class="container flex justify-between ~gap-8/16"
     :class="alignment == 'right' ? 'flex-col-reverse md:flex-row-reverse' : 'flex-col md:flex-row'"
@@ -16,40 +123,75 @@
       x-data="{ visible: false }"
       x-intersect.threshold.25.once="visible = true"
     >
+      <div class="progress-bar border border-gray-600 rounded-full flex mb-8">
+        <template x-for="s in totalSteps" :key="s">
+          <div 
+            x-bind:class="{ 'bg-twilight rounded-r-full': s === step, 'bg-twilight': s < step, 'rounded-l-full': s === 1 }"
+            class="flex-1 h-6"
+          >
+            <span class="sr-only" x-text="'Step ' + s">       
+            </span>
+          </div>
+        </template>
+      </div>
       <form
         action="/rsvp-submit"
         class="form-contents"
         method="post"
         novalidate=""
-        x-data="{ showGuest2Fields: 'No' }"
       >
-        <fieldset class="form-item fields name">
-          <legend>Guest 1 (You)</legend>
+        <fieldset class="form-item fields name" 
+          x-cloak
+          x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="opacity-0 scale-90"
+          x-transition:enter-end="opacity-100 scale-100"
+          x-transition:leave="transition ease-in duration-300"
+          x-transition:leave-start="opacity-100 scale-100"
+          x-transition:leave-end="opacity-0 scale-90"
+          x-show="step === 1"
+        >
+          <legend>Please enter your name as it appears on your invitation:</legend>
           <div class="field first-name">
-            <label for="guest-1-fname">
+            <label for="guest1fname">
               First Name
             </label>
             <input
               id="guest1fname"
               name="guest1fname"
+              x-model="guest1fname" 
               type="text"
               value=""
             />
           </div>
           <div class="field last-name">
-            <label for="guest-1-lname">
+            <label for="guest1lname">
               Last Name </label
             ><input
               id="guest1lname"
               name="guest1lname"
+              x-model="guest1lname"
               type="text"
               value=""
             />
           </div>
+          <div x-show="submitted">
+            <template x-for="item in filteredInvites">
+              <p x-text="item.family"></p>
+            </template>
+          </div>
         </fieldset>
-        <div class="form-item field select required">
-          <label for="guest-1-dinner-choice">
-            Guest 1 dinner choice
+        <div class="form-item field select required" 
+          x-cloak
+          x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="opacity-0 scale-90"
+          x-transition:enter-end="opacity-100 scale-100"
+          x-transition:leave="transition ease-in duration-300"
+          x-transition:leave-start="opacity-100 scale-100"
+          x-transition:leave-end="opacity-0 scale-90"
+          x-show="step === 2"
+        >
+          <label for="guest1dinner">
+            <span x-text="guest1fname"></span>'s dinner choice
           </label>
           <select
             id="guest1dinner"
@@ -65,10 +207,18 @@
           </select>
         </div>
         <div
-          class="form-item field textarea required"
+          class="form-item field textarea required" 
+          x-cloak
+          x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="opacity-0 scale-90"
+          x-transition:enter-end="opacity-100 scale-100"
+          x-transition:leave="transition ease-in duration-300"
+          x-transition:leave-start="opacity-100 scale-100"
+          x-transition:leave-end="opacity-0 scale-90"
+          x-show="step === 3"
         >
           <label for="guest1allergies">
-            Guest 1 food allergies
+            <span x-text="guest1fname"></span>'s food allergies
           </label>
           <p class="description">Gluten, Dairy, Shellfish, Peanuts, etc.</p>
           <textarea
@@ -76,8 +226,17 @@
             name="guest1allergies"
           ></textarea>
         </div>
-        <div class="form-item field select required">
-          <label for="select-field">
+        <div class="form-item field select required" 
+          x-cloak
+          x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="opacity-0 scale-90"
+          x-transition:enter-end="opacity-100 scale-100"
+          x-transition:leave="transition ease-in duration-300"
+          x-transition:leave-start="opacity-100 scale-100"
+          x-transition:leave-end="opacity-0 scale-90"
+          x-show="allowsGuest2 && step === 4"
+        >
+          <label for="bringguest">
             Will you be bringing a guest?
           </label>
           <select
@@ -96,24 +255,31 @@
         <fieldset
           class="form-item fields name"
           x-cloak
-          x-transition
-          x-show="showGuest2Fields == 'Yes'"
+          x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="opacity-0 scale-90"
+          x-transition:enter-end="opacity-100 scale-100"
+          x-transition:leave="transition ease-in duration-300"
+          x-transition:leave-start="opacity-100 scale-100"
+          x-transition:leave-end="opacity-0 scale-90"
+          x-show="showGuest2Fields == 'Yes' && step === 5" 
         >
           <legend>Guest 2</legend>
           <div class="field first-name">
-            <label for="guest-2-fname">First Name</label
+            <label for="guest2fname">First Name</label
             ><input
               id="guest2fname"
               name="guest2fname"
+              x-model="guest2fname"
               type="text"
               value=""
             />
           </div>
           <div class="field last-name">
-            <label for="guest-2-lname">Last Name</label
+            <label for="guest2lname">Last Name</label
             ><input
               id="guest2lname"
               name="guest2lname"
+              x-model="guest2lname"
               type="text"
               value=""
             />
@@ -122,11 +288,16 @@
         <div
           class="form-item field select required"
           x-cloak
-          x-transition
-          x-show="showGuest2Fields == 'Yes'"
+          x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="opacity-0 scale-90"
+          x-transition:enter-end="opacity-100 scale-100"
+          x-transition:leave="transition ease-in duration-300"
+          x-transition:leave-start="opacity-100 scale-100"
+          x-transition:leave-end="opacity-0 scale-90"
+          x-show="showGuest2Fields == 'Yes' && step === 5"
         >
-          <label for="guest-2-dinner-choice">
-            Guest 2 dinner choice
+          <label for="guest2dinner">
+            <span x-text="guest2fname"></span>'s dinner choice
           </label>
           <select
             id="guest2dinner"
@@ -143,11 +314,16 @@
         <div
           class="form-item field textarea required"
           x-cloak
-          x-transition
-          x-show="showGuest2Fields == 'Yes'"
+          x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="opacity-0 scale-90"
+          x-transition:enter-end="opacity-100 scale-100"
+          x-transition:leave="transition ease-in duration-300"
+          x-transition:leave-start="opacity-100 scale-100"
+          x-transition:leave-end="opacity-0 scale-90"
+          x-show="showGuest2Fields == 'Yes' && step === 5"
         >
           <label for="guest2allergies">
-            Guest 2 food allergies
+            <span x-text="guest2fname"></span>'s food allergies
           </label>
           <p class="description">Gluten, Dairy, Shellfish, Peanuts, etc.</p>
           <textarea 
@@ -155,8 +331,16 @@
             name="guest2allergies"
           ></textarea>
         </div>
-        <div class="form-item field textarea">
-          <label for="song-request">
+        <div class="form-item field textarea" 
+          x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="opacity-0 scale-90"
+          x-transition:enter-end="opacity-100 scale-100"
+          x-transition:leave="transition ease-in duration-300"
+          x-transition:leave-start="opacity-100 scale-100"
+          x-transition:leave-end="opacity-0 scale-90"
+          x-show="step === 6"
+        >
+          <label for="songrequest">
             Got a song request for the DJ?
           </label>
           <p class="description">Let's boogie.</p>
@@ -165,7 +349,11 @@
             name="songrequest"
           ></textarea>
         </div>
-        <button type="submit" class="button">Submit</button>
+        <div class="flex justify-between align-center">
+          <button type="button" class="button" x-on:click="prevStep()" x-show="step > 1">Back</button>
+          <button type="button" class="button" x-on:click="nextStep()" x-show="step < totalSteps">Next</button>
+          <button type="submit" class="button" x-show="step === totalSteps">Submit</button>
+        </div>
       </form>
     </div>
   </div>

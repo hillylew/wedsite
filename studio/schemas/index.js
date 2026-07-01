@@ -1,5 +1,6 @@
 import contactInfo from "./documents/contactInfo";
 import homepage from "./documents/homepage";
+import invite from "./documents/invite";
 import mainMenu from "./documents/mainMenu";
 import page from "./documents/page";
 import redirect from "./documents/redirect";
@@ -10,6 +11,7 @@ import accordions from "./objects/accordions";
 import backgroundColor from "./objects/backgroundColor";
 import buttonGroup from "./objects/buttonGroup";
 import contentBreak from "./objects/contentBreak";
+import guest from "./objects/guest";
 import link from "./objects/link";
 import navigationLink from "./objects/navigationLink";
 import navigationSection from "./objects/navigationSection";
@@ -25,7 +27,9 @@ export const schemaTypes = [
   buttonGroup,
   contactInfo,
   contentBreak,
+  guest,
   homepage,
+  invite,
   link,
   mainMenu,
   navigationLink,

@@ -14,7 +14,10 @@ layout: base
       ></page-hero>
 
       <template webc:if="sections" webc:nokeep>
-        <page-sections :@sections="sections"></page-sections>
+        <page-sections 
+          :@sections="sections"
+          :@invites="invites"
+        ></page-sections>
       </template>
 
       <template @raw="content" webc:nokeep></template>

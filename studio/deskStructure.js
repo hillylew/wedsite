@@ -1,4 +1,5 @@
 import {
+  RiGroupFill,
   RiPagesLine,
   RiPhoneLine,
   RiNavigationLine,
@@ -17,6 +18,11 @@ export const deskStructure = (S) =>
         .title("Homepage")
         .icon(AiOutlineHome)
         .child(S.document().schemaType("homepage").documentId("homepage")),
+
+      S.listItem()
+        .title("Invites")
+        .child(S.documentTypeList("invite"))
+        .icon(RiGroupFill),
 
       S.listItem()
         .title("Pages")
