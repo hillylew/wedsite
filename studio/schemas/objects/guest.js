@@ -16,17 +16,15 @@ export default {
       name: "lname",
       title: "Last Name",
       type: "string",
-      validation: (Rule) => Rule.required(),
     },
   ],
   preview: {
     select: {
       fname: "fname",
-      lname: "lname",
     },
-    prepare({fname, lname}) {
+    prepare({fname}) {
       return {
-        title: `Guest: ${fname} ${lname}`,
+        title: `Guest: ${fname}`,
       };
     },
   },

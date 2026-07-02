@@ -149,6 +149,14 @@
     @apply w-full lg:w-[45%];
   }
 
+  .form-radio-group label {
+    @apply flex items-center gap-2 my-2 font-normal text-base;
+  }
+
+  .form-radio-group input {
+    @apply w-4 h-4;
+  }
+
   blockquote {
   }
 
