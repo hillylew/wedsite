@@ -85,7 +85,7 @@
             this.step = 6;
             return;
           }
-          if (this.guest2attending == 'No' && this.showGuest2Fields == 'No' && this.step == 4) {
+          if (this.guest2attending == 'No' && this.step == 4) {
             this.step = 6;
             return;
           }
@@ -204,7 +204,7 @@
           x-show="step === 2"
         >
           <label for="guest1attending">
-            Will you be able to attend?
+            Will <span x-text="guest1fname"></span> be able to attend?
           </label>
           <div class="form-radio-group">
             <label>
@@ -306,7 +306,7 @@
           x-transition:enter="transition ease-out duration-300"
           x-transition:enter-start="opacity-0 scale-90"
           x-transition:enter-end="opacity-100 scale-100"
-          x-show="showGuest2Fields == 'Yes' && !hasGuest2 && allowsGuest2 && step === 4" 
+          x-show="showGuest2Fields == 'Yes' && step === 4" 
         >
           <legend class="sr-only">Guest 2</legend>
           <div class="field first-name">
@@ -408,13 +408,13 @@
           x-transition:enter-end="opacity-100 scale-100"
           x-show="step === 6"
         >
-          <label for="songrequest">
-            Got a song request for the DJ?
+          <label for="notes">
+            Questions or Concerns?
           </label>
-          <p class="description">Let's boogie.</p>
+          <p class="description">Is there anything else you'd like us to know?</p>
           <textarea
-            id="songrequest"
-            name="songrequest"
+            id="notes"
+            name="notes"
           ></textarea>
         </div>
         <div class="flex justify-between align-center">

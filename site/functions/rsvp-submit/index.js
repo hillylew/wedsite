@@ -89,7 +89,7 @@ async function addRow(formData, accessToken, env) {
               formData.get('guest2attending'),
               formData.get('guest2dinner'),
               formData.get('guest2allergies'),
-              formData.get('songrequest'),
+              formData.get('notes'),
             ],
           ],
         }),
