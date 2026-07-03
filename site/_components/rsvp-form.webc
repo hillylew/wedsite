@@ -246,7 +246,9 @@
             <option value="">Select an option</option>
             <option value="Chicken">Chicken</option>
             <option value="Fish">Fish</option>
-            <option value="Veggie">Veggie</option>
+            <option value="Vegetarian">Vegetarian</option>
+            <option value="Vegan">Vegan</option>  
+            <option value="Kid's Meal">Kid's Meal</option>
           </select>
         </div>
         <div
@@ -375,12 +377,12 @@
             id="guest2dinner"
             name="guest2dinner"
           >
-            <option value="Select an option">
-              Select an option
-            </option>
+            <option value="">Select an option</option>
             <option value="Chicken">Chicken</option>
             <option value="Fish">Fish</option>
-            <option value="Veggie">Veggie</option>
+            <option value="Vegetarian">Vegetarian</option>
+            <option value="Vegan">Vegan</option>  
+            <option value="Kid's Meal">Kid's Meal</option>
           </select>
         </div>
         <div
