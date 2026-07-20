@@ -30,6 +30,12 @@
     ></quote>
   </template> 
 
+  <template webc:if="section._type === 'registry'" webc:nokeep>
+    <registry
+      :@registry="section.registry"
+    ></registry>
+  </template>
+
   <template webc:if="section._type === 'richImage'" webc:nokeep>
     <rich-image
       :@image="section.image"

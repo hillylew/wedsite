@@ -19,6 +19,7 @@ export default {
     { type: "buttonGroup" },
     { type: "contentBreak" },
     { type: "quote" },
+    { type: "registry" },
     { type: "richImage" },
     { type: "richText" },
     { type: "rsvpForm" }

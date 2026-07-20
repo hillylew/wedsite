@@ -16,6 +16,7 @@ import link from "./objects/link";
 import navigationLink from "./objects/navigationLink";
 import navigationSection from "./objects/navigationSection";
 import quote from "./objects/quote";
+import registry from "./objects/registry";
 import richImage from "./objects/richImage";
 import richText from "./objects/richText";
 import rsvpForm from "./objects/rsvpForm";
@@ -37,6 +38,7 @@ export const schemaTypes = [
   page,
   quote,
   redirect,
+  registry,
   richImage,
   richText,
   rsvpForm,
