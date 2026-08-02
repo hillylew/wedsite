@@ -3,19 +3,14 @@
     function filterInvites() {
       return {
         step: 1,
-        totalSteps: 6,
-        guest1fname: "",
-        guest1lname: "",
+        guests: [],
         searchStarted: false,
-        guest1attending: false,
-        guest2fname: "",
-        guest2lname: "",
-        guest2attending: false,
-        showGuest2Fields: false,
-        allowsGuest2: false,
-        hasGuest2: false,
         selectedInvite: null,
         inviteList: `{{ invites | json }}`,
+        search: {
+          fname: "",
+          lname: "",
+        },
 
         init() {
           this.inviteList = JSON.parse(this.inviteList);
@@ -30,7 +25,8 @@
           const matches = this.filteredInvites;
           if (matches.length === 1) {
             this.selectedInvite = matches[0];
-            this.setGuest2FromInvite(matches[0]);
+            this.setupGuests();
+            this.step = 2;
           } else {
             this.selectedInvite = null;
           }
@@ -38,44 +34,39 @@
 
         selectInvite(invite) {
           this.selectedInvite = invite;
-          this.setGuest2FromInvite(invite);
+          this.setupGuests();
+          this.step = 2;
         },
 
-        setGuest2FromInvite(invite) {
-          if (!invite?.guests?.length) {
-            this.allowsGuest2 = false;
-            return;
+        setupGuests() {
+          if (!this.selectedInvite) return;
+
+          const inviteGuests = this.selectedInvite.guests || [];
+          this.guests = inviteGuests.map((g) => ({
+            fname: g.fname || "",
+            lname: g.lname || "",
+            attending: null,
+            dinner: "",
+            allergies: "",
+          }));
+
+          if (this.selectedInvite.plusone && this.guests.length < 2) {
+            this.guests.push({
+              fname: "Guest",
+              lname: "",
+              attending: null,
+              dinner: "",
+              allergies: "",
+              isPlusOne: true,
+            });
           }
-
-          const matchedGuest = invite.guests.find((guest) => {
-            const guestFirstName = (guest.fname || "").trim().toLowerCase();
-            const guestLastName = (guest.lname || "").trim().toLowerCase();
-            const firstName = (this.guest1fname || "").trim().toLowerCase();
-            const lastName = (this.guest1lname || "").trim().toLowerCase();
-
-            const firstNameMatch =
-              !firstName || guestFirstName.includes(firstName);
-            const lastNameMatch = !lastName || guestLastName.includes(lastName);
-
-            return firstNameMatch && lastNameMatch;
-          });
-
-          const otherGuest =
-            invite.guests.find((guest) => guest !== matchedGuest) ||
-            invite.guests[1];
-
-          this.guest2fname = otherGuest?.fname || this.guest2fname;
-          this.guest2lname = otherGuest?.lname || this.guest2lname;
-          this.hasGuest2 = !!otherGuest;
-          this.allowsGuest2 = invite.plusone === true;
-          this.showGuest2Fields = invite.guests.length > 1;
         },
 
         get filteredInvites() {
           if (!this.searchStarted) return [];
 
-          const firstName = (this.guest1fname || "").trim().toLowerCase();
-          const lastName = (this.guest1lname || "").trim().toLowerCase();
+          const firstName = (this.search.fname || "").trim().toLowerCase();
+          const lastName = (this.search.lname || "").trim().toLowerCase();
 
           if (!firstName || !lastName) {
             return [];
@@ -85,68 +76,91 @@
             return invite.guests.some((guest) => {
               const guestFirstName = (guest.fname || "").trim().toLowerCase();
               const guestLastName = (guest.lname || "").trim().toLowerCase();
-
-              const firstNameMatch =
-                !firstName || guestFirstName.includes(firstName);
-              const lastNameMatch =
-                !lastName || guestLastName.includes(lastName);
-
-              return firstNameMatch && lastNameMatch;
+              return (
+                guestFirstName.includes(firstName) &&
+                guestLastName.includes(lastName)
+              );
             });
           });
         },
-        nextStep() {
-          if (this.guest1attending === false && this.step === 2) {
-            this.step = 4;
-            return;
-          }
-          if (this.showGuest2Fields === false && this.step === 4) {
-            this.step = 6;
-            return;
-          }
-          if (this.guest2attending === false && this.step === 4) {
-            this.step = 6;
-            return;
-          }
-          if (
-            !this.allowsGuest2 &&
-            !this.hasGuest2 &&
-            (this.step === 3 || this.step === 4 || this.step === 5)
-          ) {
-            this.step = 6;
-            return;
-          }
 
-          this.step++;
+        get totalSteps() {
+          let steps = 1; // Search step
+          if (this.guests.length === 0) return 2; // Search + Notes
+          
+          // We use a virtual total based on potential pages to keep the 
+          // template indices (2 + index*2) consistent.
+          steps = 1 + (this.guests.length * 2) + 1;
+          return steps;
         },
 
-        prevStep() {
-          if (this.guest1attending === false && this.step === 4) {
+        nextStep() {
+          if (!this.selectedInvite) {
+            alert("Please find your invitation first.");
+            return;
+          }
+
+          if (this.step === 1) {
             this.step = 2;
             return;
           }
-          if (
-            !this.allowsGuest2 &&
-            !this.hasGuest2 &&
-            (this.step === 4 || this.step === 5 || this.step === 6)
-          ) {
-            this.step = 3;
-            return;
-          }
-          if (this.showGuest2Fields === false && this.step === 6) {
-            this.step = 4;
-            return;
-          }
-          if (
-            this.guest2attending === false &&
-            this.showGuest2Fields === false &&
-            this.step === 6
-          ) {
-            this.step = 4;
-            return;
+
+          const currentGuestIndex = Math.floor((this.step - 2) / 2);
+          const isAttendanceStep = (this.step - 2) % 2 === 0;
+          const guest = this.guests[currentGuestIndex];
+
+          if (isAttendanceStep) {
+            if (!guest || guest.attending === null) {
+              alert("Please select whether you can attend.");
+              return;
+            }
+            if (guest.attending === false || guest.attending === "false") {
+              this.step += 2;
+            } else {
+              this.step++;
+              return;
+            }
+          } else {
+            if (!guest || !guest.dinner){
+              alert("Please select a dinner choice.");
+              return;
+            }
+            this.step++;
           }
 
-          this.step--;
+          // Important: only skip if we are currently on a details step and that guest is NOT attending
+          // The loop is for multiple consecutive declines.
+          while (this.step < this.totalSteps) {
+            const isDetailsStep = (this.step - 2) % 2 === 1;
+            if (isDetailsStep && currentGuestIndex < this.guests.length && (guest.attending === false || guest.attending === "false")) {
+              this.step++;
+            } else {
+              break;
+            }
+          }
+
+          if (this.step > this.totalSteps) {
+            this.step = this.totalSteps;
+          }
+        },
+
+        prevStep() {
+          if (this.step === 1) return;
+          
+          let targetStep = this.step - 1;
+          
+          while (targetStep > 1) {
+            const guestIndex = Math.floor((targetStep - 2) / 2);
+            const isDetailsStep = (targetStep - 2) % 2 === 1;
+            
+            if (guestIndex >= 0 && guestIndex < this.guests.length && isDetailsStep && (this.guests[guestIndex].attending === false || this.guests[guestIndex].attending === "false")) {
+              targetStep--;
+            } else {
+              break;
+            }
+          }
+          
+          this.step = Math.max(1, targetStep);
         },
       };
     }
@@ -195,13 +209,13 @@
           x-transition:enter-end="opacity-100 scale-100"
           x-show="step === 1"
         >
-          <legend>Look up your invitation:</legend>
+          <legend>look up your invitation:</legend>
           <div class="field first-name">
             <label for="guest1fname"> First Name </label>
             <input
               id="guest1fname"
               name="guest1fname"
-              x-model="guest1fname"
+              x-model="search.fname"
               type="text"
               value=""
             />
@@ -211,7 +225,7 @@
             ><input
               id="guest1lname"
               name="guest1lname"
-              x-model="guest1lname"
+              x-model="search.lname"
               type="text"
               value=""
             />
@@ -219,17 +233,17 @@
           <button
             type="button"
             class="button"
-            x-on:click="startSearch()"
+            x-on:click.prevent="startSearch()"
             x-show="!searchStarted && selectedInvite === null"
           >
             Find Invitation
           </button>
           <div x-show="searchStarted && filteredInvites.length === 1">
-            <p x-show="hasGuest2 || allowsGuest2">
+            <p x-show="guests.length > 1">
               Welcome! If your invitation includes a guest or your family, you
               will be able to respond for your entire group.
             </p>
-            <p x-show="!hasGuest2 && !allowsGuest2">
+            <p x-show="guests.length <= 1">
               Welcome! We were able to locate your invitation.
             </p>
           </div>
@@ -245,7 +259,7 @@
                     name="selectedInvite"
                     x-model="selectedInvite"
                     :value="invite"
-                    @change="selectInvite(invite)"
+                    x-on:change="selectInvite(invite)"
                   />
                   <span x-text="invite.family"></span>
                 </label>
@@ -259,210 +273,113 @@
             </p>
           </div>
         </fieldset>
-        <div
-          class="form-item field radio required"
-          x-cloak
-          x-transition:enter="transition ease-out duration-300"
-          x-transition:enter-start="opacity-0 scale-90"
-          x-transition:enter-end="opacity-100 scale-100"
-          x-show="step === 2"
-        >
-          <label for="guest1attending">
-            Will <span x-text="guest1fname"></span> be able to attend?
-          </label>
-          <div class="form-radio-group">
-            <label>
-              <input
-                type="radio"
-                name="guest1attending"
-                x-model="guest1attending"
-                :value="true"
-                required=""
-              />
-              Joyfully Accepts
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="guest1attending"
-                :value="false"
-                required=""
-              />
-              Sadly Declines
-            </label>
+
+        <template x-if="selectedInvite !== null">
+          <div>
+            <template x-for="(guest, index) in guests" :key="index">
+              <div>
+                <div
+                  class="form-item field radio required"
+                  x-cloak
+                  x-transition:enter="transition ease-out duration-300"
+                  x-transition:enter-start="opacity-0 scale-90"
+                  x-transition:enter-end="opacity-100 scale-100"
+                  x-show="step === (2 + index * 2)"
+                >
+                  <label x-bind:for="'guest_' + index + '_attending'">
+                    Will <span x-text="guest.fname + ' ' + guest.lname"></span> be
+                    able to attend?
+                  </label>
+                  <div class="form-radio-group">
+                    <label>
+                      <input
+                        type="radio"
+                        x-bind:name="'guest_' + index + '_attending'"
+                        x-model="guest.attending"
+                        x-bind:value="true"
+                      />
+                      Joyfully Accepts
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        x-bind:name="'guest_' + index + '_attending'"
+                        x-model="guest.attending"
+                        x-bind:value="false"
+                      />
+                      Sadly Declines
+                    </label>
+                  </div>
+                </div>
+    
+                <div
+                  class="form-item field select required"
+                  x-cloak
+                  x-transition:enter="transition ease-out duration-300"
+                  x-transition:enter-start="opacity-0 scale-90"
+                  x-transition:enter-end="opacity-100 scale-100"
+                  x-show="step === (3 + index * 2)"
+    
+                >
+                  <label x-bind:for="'guest_' + index + '_dinner'">
+                    <span x-text="guest.fname"></span>'s dinner choice
+                  </label>
+                  <select
+                    x-bind:id="'guest_' + index + '_dinner'"
+                    x-bind:name="'guest_' + index + '_dinner'"
+                    x-model="guest.dinner"
+                    required=""
+                  >
+                    <option value="">Select an option</option>
+                    <option value="Chicken">Chicken</option>
+                    <option value="Fish">Fish</option>
+                    <option value="Vegetarian">Vegetarian</option>
+                    <option value="Vegan">Vegan</option>
+                  </select>
+                </div>
+    
+                <div
+                  class="form-item field textarea"
+                  x-cloak
+                  x-transition:enter="transition ease-out duration-300"
+                  x-transition:enter-start="opacity-0 scale-90"
+                  x-transition:enter-end="opacity-100 scale-100"
+                  x-show="step === (3 + index * 2)"
+    
+                >
+                  <label x-bind:for="'guest_' + index + '_allergies'">
+                    Does <span x-text="guest.fname"></span> have any food allergies or
+                    restrictions?
+                  </label>
+                  <p class="description">Gluten, Dairy, Shellfish, Peanuts, etc.</p>
+                  <textarea
+                    x-bind:id="'guest_' + index + '_allergies'"
+                    x-bind:name="'guest_' + index + '_allergies'"
+                    x-model="guest.allergies"
+                  ></textarea>
+                </div>
+    
+                <input
+                  type="hidden"
+                  x-bind:name="'guest_' + index + '_fname'"
+                  x-bind:value="guest ? guest.fname : ''"
+                />
+                <input
+                  type="hidden"
+                  x-bind:name="'guest_' + index + '_lname'"
+                  x-bind:value="guest ? guest.lname : ''"
+                />
+              </div>
+            </template>
           </div>
-        </div>
-        <div
-          class="form-item field select required"
-          x-cloak
-          x-transition:enter="transition ease-out duration-300"
-          x-transition:enter-start="opacity-0 scale-90"
-          x-transition:enter-end="opacity-100 scale-100"
-          x-show="step === 3 && guest1attending"
-        >
-          <label for="guest1dinner">
-            <span x-text="guest1fname"></span>'s dinner choice
-          </label>
-          <select id="guest1dinner" name="guest1dinner" required="">
-            <option value="">Select an option</option>
-            <option value="Chicken">Chicken</option>
-            <option value="Fish">Fish</option>
-            <option value="Vegetarian">Vegetarian</option>
-            <option value="Vegan">Vegan</option>
-            <option value="Kid's Meal">Kid's Meal</option>
-          </select>
-        </div>
-        <div
-          class="form-item field textarea required"
-          x-cloak
-          x-transition:enter="transition ease-out duration-300"
-          x-transition:enter-start="opacity-0 scale-90"
-          x-transition:enter-end="opacity-100 scale-100"
-          x-show="step === 3 && guest1attending"
-        >
-          <label for="guest1allergies">
-            Does <span x-text="guest1fname"></span> have any food allergies or
-            restrictions?
-          </label>
-          <p class="description">Gluten, Dairy, Shellfish, Peanuts, etc.</p>
-          <textarea id="guest1allergies" name="guest1allergies"></textarea>
-        </div>
-        <div
-          class="form-item field select required"
-          x-cloak
-          x-transition:enter="transition ease-out duration-300"
-          x-transition:enter-start="opacity-0 scale-90"
-          x-transition:enter-end="opacity-100 scale-100"
-          x-show="!hasGuest2 && allowsGuest2 && step === 4"
-        >
-          <label for="bringguest"> Will you be bringing a guest? </label>
-          <div class="form-radio-group">
-            <label>
-              <input
-                type="radio"
-                name="bringguest"
-                x-model="showGuest2Fields"
-                :value="true"
-                required=""
-              />
-              Yes
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="bringguest"
-                :value="false"
-                required=""
-              />
-              No
-            </label>
-          </div>
-        </div>
-        <fieldset
-          class="form-item fields name"
-          x-cloak
-          x-transition:enter="transition ease-out duration-300"
-          x-transition:enter-start="opacity-0 scale-90"
-          x-transition:enter-end="opacity-100 scale-100"
-          x-show="showGuest2Fields && step === 4"
-        >
-          <legend class="sr-only">Guest 2</legend>
-          <div class="field first-name">
-            <label for="guest2fname">First Name</label
-            ><input
-              id="guest2fname"
-              name="guest2fname"
-              x-model="guest2fname"
-              type="text"
-              value=""
-            />
-          </div>
-          <div class="field last-name">
-            <label for="guest2lname">Last Name</label
-            ><input
-              id="guest2lname"
-              name="guest2lname"
-              x-model="guest2lname"
-              type="text"
-              value=""
-            />
-          </div>
-        </fieldset>
-        <div
-          class="form-item field radio required"
-          x-cloak
-          x-transition:enter="transition ease-out duration-300"
-          x-transition:enter-start="opacity-0 scale-90"
-          x-transition:enter-end="opacity-100 scale-100"
-          x-show="showGuest2Fields && hasGuest2 && step === 4"
-        >
-          <label for="guest2attending">
-            Will <span x-text="guest2fname + ' ' + guest2lname"></span> be able
-            to attend?
-          </label>
-          <div class="form-radio-group">
-            <label>
-              <input
-                type="radio"
-                name="guest2attending"
-                x-model="guest2attending"
-                :value="true"
-                required=""
-              />
-              Joyfully Accepts
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="guest2attending"
-                :value="false"
-                required=""
-              />
-              Sadly Declines
-            </label>
-          </div>
-        </div>
-        <div
-          class="form-item field select required"
-          x-cloak
-          x-transition:enter="transition ease-out duration-300"
-          x-transition:enter-start="opacity-0 scale-90"
-          x-transition:enter-end="opacity-100 scale-100"
-          x-show="showGuest2Fields && step === 5"
-        >
-          <label for="guest2dinner">
-            <span x-text="guest2fname"></span>'s dinner choice
-          </label>
-          <select id="guest2dinner" name="guest2dinner">
-            <option value="">Select an option</option>
-            <option value="Chicken">Chicken</option>
-            <option value="Fish">Fish</option>
-            <option value="Vegetarian">Vegetarian</option>
-            <option value="Vegan">Vegan</option>
-            <option value="Kid's Meal">Kid's Meal</option>
-          </select>
-        </div>
-        <div
-          class="form-item field textarea required"
-          x-cloak
-          x-transition:enter="transition ease-out duration-300"
-          x-transition:enter-start="opacity-0 scale-90"
-          x-transition:enter-end="opacity-100 scale-100"
-          x-show="showGuest2Fields && step === 5"
-        >
-          <label for="guest2allergies">
-            Does <span x-text="guest2fname"></span> have any food allergies or
-            restrictions?
-          </label>
-          <p class="description">Gluten, Dairy, Shellfish, Peanuts, etc.</p>
-          <textarea id="guest2allergies" name="guest2allergies"></textarea>
-        </div>
+        </template>
+
         <div
           class="form-item field textarea"
           x-transition:enter="transition ease-out duration-300"
           x-transition:enter-start="opacity-0 scale-90"
           x-transition:enter-end="opacity-100 scale-100"
-          x-show="step === 6"
+          x-show="step === totalSteps"
         >
           <label for="notes"> Questions or Concerns? </label>
           <p class="description">
@@ -474,7 +391,7 @@
           <button
             type="button"
             class="button"
-            x-on:click="prevStep()"
+            x-on:click.prevent="prevStep()"
             x-show="step > 1"
           >
             Back
@@ -482,7 +399,7 @@
           <button
             type="button"
             class="button"
-            x-on:click="nextStep()"
+            x-on:click.prevent="nextStep()"
             x-show="step < totalSteps && selectedInvite !== null"
           >
             Next

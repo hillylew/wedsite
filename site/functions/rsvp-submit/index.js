@@ -66,6 +66,44 @@ async function addRow(formData, accessToken, env) {
   const timeoutId = setTimeout(() => controller.abort(), 20000);
 
   try {
+    const notes = formData.get('notes') || "";
+    const guests = [];
+    let guestIndex = 0;
+
+    while (true) {
+      const fname = formData.get(`guest_${guestIndex}_fname`);
+      if (fname === null) break;
+
+      guests.push({
+        fname: fname,
+        lname: formData.get(`guest_${guestIndex}_lname`) || "",
+        attending: formData.get(`guest_${guestIndex}_attending`) === 'true',
+        dinner: formData.get(`guest_${guestIndex}_dinner`) || "",
+        allergies: formData.get(`guest_${guestIndex}_allergies`) || "",
+      });
+      guestIndex++;
+    }
+
+    if (guests.length === 0) {
+      throw new Error("No guest data found in submission");
+    }
+
+    const values = guests.map((guest, index) => {
+      const row = [
+        guest.fname,
+        guest.lname,
+        guest.attending ? "Yes" : "No",
+        guest.dinner,
+        guest.allergies,
+      ];
+      if (index === 0) {
+        row.push(notes);
+      } else {
+        row.push("");
+      }
+      return row;
+    });
+
     const response = await fetch(
       `https://sheets.googleapis.com/v4/spreadsheets/${env.GOOGLE_SPREADSHEET_ID}/values/${encodeURIComponent(env.GOOGLE_SHEETS_SUBSCRIBERS_PAGE)}:append?valueInputOption=USER_ENTERED`,
       {
@@ -77,21 +115,7 @@ async function addRow(formData, accessToken, env) {
         body: JSON.stringify({
           range: env.GOOGLE_SHEETS_SUBSCRIBERS_PAGE,
           majorDimension: "ROWS",
-          values: [
-            [
-              formData.get('guest1fname'),
-              formData.get('guest1lname'),
-              formData.get('guest1attending'),
-              formData.get('guest1dinner'),
-              formData.get('guest1allergies'),
-              formData.get('guest2fname'),
-              formData.get('guest2lname'),
-              formData.get('guest2attending'),
-              formData.get('guest2dinner'),
-              formData.get('guest2allergies'),
-              formData.get('notes'),
-            ],
-          ],
+          values: values,
         }),
         signal: controller.signal,
       },
@@ -109,6 +133,16 @@ async function addRow(formData, accessToken, env) {
         status: response.status,
       };
     }
+  } catch (error) {
+    console.error("addRow error", error);
+    return {
+      error: error instanceof Error ? error.message : String(error),
+      status: 500,
+    };
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
   } catch (error) {
     console.error("addRow error", error);
     return {
