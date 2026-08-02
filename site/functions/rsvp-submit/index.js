@@ -143,16 +143,6 @@ async function addRow(formData, accessToken, env) {
     clearTimeout(timeoutId);
   }
 }
-  } catch (error) {
-    console.error("addRow error", error);
-    return {
-      error: error instanceof Error ? error.message : String(error),
-      status: 500,
-    };
-  } finally {
-    clearTimeout(timeoutId);
-  }
-}
 
 export async function onRequestGet(context) {
   return Response.redirect(env.SITE_URL, 302);
