@@ -7,11 +7,12 @@
         searchStarted: false,
         selectedInvite: null,
         inviteList: `{{ invites | json }}`,
+        eventType: `{{ eventType || 'wedding' }}`,
         search: {
           fname: "",
           lname: "",
         },
-
+        
         init() {
           this.inviteList = JSON.parse(this.inviteList);
         },
@@ -38,29 +39,34 @@
           this.step = 2;
         },
 
-        setupGuests() {
-          if (!this.selectedInvite) return;
+         setupGuests() {
+           if (!this.selectedInvite) return;
+ 
+           const inviteGuests = this.selectedInvite.guests || [];
+           this.guests = inviteGuests
+             .filter(g => this.eventType === 'wedding' || g.bridalShower)
+             .map((g) => ({
+               fname: g.fname || "",
+               lname: g.lname || "",
+               attending: null,
+               dinner: "",
+               allergies: "",
+             }));
+ 
+           if (this.selectedInvite.plusone && this.guests.length < 2) {
+             const isPlusOneEligible = this.eventType === 'wedding' || (this.selectedInvite.bridalShower);
+             if (!isPlusOneEligible) return;
 
-          const inviteGuests = this.selectedInvite.guests || [];
-          this.guests = inviteGuests.map((g) => ({
-            fname: g.fname || "",
-            lname: g.lname || "",
-            attending: null,
-            dinner: "",
-            allergies: "",
-          }));
-
-          if (this.selectedInvite.plusone && this.guests.length < 2) {
-            this.guests.push({
-              fname: "Guest",
-              lname: "",
-              attending: null,
-              dinner: "",
-              allergies: "",
-              isPlusOne: true,
-            });
-          }
-        },
+             this.guests.push({
+               fname: "Guest",
+               lname: "",
+               attending: null,
+               dinner: "",
+               allergies: "",
+               isPlusOne: true,
+             });
+           }
+         },
 
         get filteredInvites() {
           if (!this.searchStarted) return [];
@@ -109,24 +115,28 @@
           const isAttendanceStep = (this.step - 2) % 2 === 0;
           const guest = this.guests[currentGuestIndex];
 
-          if (isAttendanceStep) {
-            if (!guest || guest.attending === null) {
-              alert("Please select whether you can attend.");
-              return;
-            }
-            if (guest.attending === false || guest.attending === "false") {
-              this.step += 2;
-            } else {
-              this.step++;
-              return;
-            }
-          } else {
-            if (!guest || !guest.dinner){
-              alert("Please select a dinner choice.");
-              return;
-            }
-            this.step++;
-          }
+           if (isAttendanceStep) {
+             if (!guest || guest.attending === null) {
+               alert("Please select whether you can attend.");
+               return;
+             }
+             if (guest.attending === false || guest.attending === "false") {
+               this.step += 2;
+             } else {
+               if (this.eventType === 'wedding') {
+                 this.step++;
+                 return;
+               } else {
+                 this.step += 2; 
+               }
+             }
+           } else {
+             if (this.eventType === 'wedding' && (!guest || !guest.dinner)){
+               alert("Please select a dinner choice.");
+               return;
+             }
+             this.step++;
+           }
 
           // Important: only skip if we are currently on a details step and that guest is NOT attending
           // The loop is for multiple consecutive declines.
@@ -286,10 +296,10 @@
                   x-transition:enter-end="opacity-100 scale-100"
                   x-show="step === (2 + index * 2)"
                 >
-                  <label x-bind:for="'guest_' + index + '_attending'">
-                    Will <span x-text="guest.fname + ' ' + guest.lname"></span> be
-                    able to attend?
-                  </label>
+                    <label x-bind:for="'guest_' + index + '_attending'">
+                      Will <span x-text="guest.fname + ' ' + guest.lname"></span> be
+                      able to attend the <span x-text="eventType === 'wedding' ? 'wedding' : 'bridal shower'"></span>?
+                    </label>
                   <div class="form-radio-group">
                     <label>
                       <input
@@ -370,13 +380,14 @@
                   x-bind:value="guest ? guest.lname : ''"
                 />
               </div>
-            </template>
-          </div>
-        </template>
-
-        <div
-          class="form-item field textarea"
-          x-transition:enter="transition ease-out duration-300"
+             </template>
+           </div>
+         </template>
+         <input type="hidden" name="eventType" :value="eventType" />
+ 
+         <div
+           class="form-item field textarea"
+           x-transition:enter="transition ease-out duration-300"
           x-transition:enter-start="opacity-0 scale-90"
           x-transition:enter-end="opacity-100 scale-100"
           x-show="step === totalSteps"

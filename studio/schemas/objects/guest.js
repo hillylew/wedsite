@@ -13,9 +13,15 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
-      name: "lname",
-      title: "Last Name",
-      type: "string",
+       name: "lname",
+       title: "Last Name",
+       type: "string",
+     },
+    {
+      name: "bridalShower",
+      title: "Bridal Shower Invite",
+      type: "boolean",
+      initialValue: false,
     },
   ],
   preview: {

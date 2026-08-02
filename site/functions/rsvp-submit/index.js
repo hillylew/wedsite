@@ -62,18 +62,23 @@ async function getGoogleSheetsAccessToken(env) {
 }
 
 async function addRow(formData, accessToken, env) {
+  const eventType = formData.get('eventType') || 'wedding';
+  const sheetPage = eventType === 'bridal-shower' 
+    ? env.GOOGLE_SHEETS_BRIDAL_SHOWER_PAGE 
+    : env.GOOGLE_SHEETS_SUBSCRIBERS_PAGE;
+    
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 20000);
-
+ 
   try {
     const notes = formData.get('notes') || "";
     const guests = [];
     let guestIndex = 0;
-
+ 
     while (true) {
       const fname = formData.get(`guest_${guestIndex}_fname`);
       if (fname === null) break;
-
+ 
       guests.push({
         fname: fname,
         lname: formData.get(`guest_${guestIndex}_lname`) || "",
@@ -83,11 +88,11 @@ async function addRow(formData, accessToken, env) {
       });
       guestIndex++;
     }
-
+ 
     if (guests.length === 0) {
       throw new Error("No guest data found in submission");
     }
-
+ 
     const values = guests.map((guest, index) => {
       const row = [
         guest.fname,
@@ -103,9 +108,9 @@ async function addRow(formData, accessToken, env) {
       }
       return row;
     });
-
+ 
     const response = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${env.GOOGLE_SPREADSHEET_ID}/values/${encodeURIComponent(env.GOOGLE_SHEETS_SUBSCRIBERS_PAGE)}:append?valueInputOption=USER_ENTERED`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${env.GOOGLE_SPREADSHEET_ID}/values/${encodeURIComponent(sheetPage)}:append?valueInputOption=USER_ENTERED`,
       {
         method: "POST",
         headers: {
@@ -113,14 +118,14 @@ async function addRow(formData, accessToken, env) {
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
-          range: env.GOOGLE_SHEETS_SUBSCRIBERS_PAGE,
+          range: sheetPage,
           majorDimension: "ROWS",
           values: values,
         }),
         signal: controller.signal,
       },
     );
-
+ 
     if (response.ok) {
       return {
         data: "Success! Your RSVP has been recorded.",

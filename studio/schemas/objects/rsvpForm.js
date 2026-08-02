@@ -13,7 +13,19 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
-      ...richImage
+       ...richImage
+     },
+    {
+      name: "eventType",
+      title: "Event Type",
+      type: "string",
+      options: {
+        list: [
+          { title: "Wedding", value: "wedding" },
+          { title: "Bridal Shower", value: "bridal-shower" },
+        ],
+      },
+      validation: (Rule) => Rule.required(),
     },
   ],
   preview: {
