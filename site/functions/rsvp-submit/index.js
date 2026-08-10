@@ -4,10 +4,12 @@ import jwt from "@tsndr/cloudflare-worker-jwt";
 async function getJWTAccessToken(env) {
   const iat = Math.floor(Date.now() / 1000);
   const exp = iat + 3600;
-  const privateKey = env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
+  const privateKey = env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n");
   if (!privateKey) throw new Error("Missing GOOGLE_PRIVATE_KEY");
   if (!privateKey.startsWith("-----BEGIN PRIVATE KEY-----")) {
-    throw new Error("Invalid private key format - must be PEM format starting with -----BEGIN PRIVATE KEY-----");
+    throw new Error(
+      "Invalid private key format - must be PEM format starting with -----BEGIN PRIVATE KEY-----",
+    );
   }
   const jwtToken = jwt.sign(
     {
@@ -44,12 +46,16 @@ async function getGoogleSheetsAccessToken(env) {
 
     if (!response.ok) {
       const text = await response.text().catch(() => "<no body>");
-      throw new Error(`Failed to get access token: ${response.status} ${response.statusText} | ${text}`);
+      throw new Error(
+        `Failed to get access token: ${response.status} ${response.statusText} | ${text}`,
+      );
     }
 
     const data = await response.json();
     if (!data?.access_token) {
-      throw new Error(`Access token not found in response: ${JSON.stringify(data)}`);
+      throw new Error(
+        `Access token not found in response: ${JSON.stringify(data)}`,
+      );
     }
 
     return data.access_token;
@@ -66,7 +72,7 @@ async function addRow(formData, accessToken, env) {
   const timeoutId = setTimeout(() => controller.abort(), 20000);
 
   try {
-    const notes = formData.get('notes') || "";
+    const notes = formData.get("notes") || "";
     const guests = [];
     let guestIndex = 0;
 
@@ -77,7 +83,7 @@ async function addRow(formData, accessToken, env) {
       guests.push({
         fname: fname,
         lname: formData.get(`guest_${guestIndex}_lname`) || "",
-        attending: formData.get(`guest_${guestIndex}_attending`) === 'true',
+        attending: formData.get(`guest_${guestIndex}_attending`) === "true",
         dinner: formData.get(`guest_${guestIndex}_dinner`) || "",
         allergies: formData.get(`guest_${guestIndex}_allergies`) || "",
       });
@@ -160,6 +166,8 @@ export async function onRequestPost(context) {
     // Redirect to homepage with success message
     return Response.redirect(env.SITE_URL + "/?rsvp=success", 302);
   } catch (error) {
-    return new Response(`Internal Server Error: ${error.message}`, { status: 500 });
+    return new Response(`Internal Server Error: ${error.message}`, {
+      status: 500,
+    });
   }
 }
