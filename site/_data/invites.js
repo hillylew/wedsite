@@ -10,6 +10,7 @@ export default async function (configData) {
       guests[]{
         fname,
         lname,
+        bridalShower,
       },
     }
   `;

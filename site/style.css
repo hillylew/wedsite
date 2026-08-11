@@ -183,7 +183,7 @@
 
 @layer components {
   .button {
-    @apply  block max-w-[350px] px-6 py-3 my-4 bg-transparent border-2 border-gold rounded-lg transition-colors duration-150 hover:no-underline hover:bg-gold;
+    @apply  block max-w-[350px] px-6 py-2 my-4 bg-gold border-2 border-gold rounded-lg transition-colors duration-150 hover:no-underline hover:bg-transparent;
   }
 
   .bg-twilight {

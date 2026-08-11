@@ -57,6 +57,7 @@
   <template webc:if="section._type === 'rsvpForm'" webc:nokeep>
     <rsvp-form
       :@invites="invites"
+      :@event-type="section.eventType"
       :@bgcolor="section.bgColor"
       :@image="section.richImage"
       :@alignment="section.richImageAlign"
