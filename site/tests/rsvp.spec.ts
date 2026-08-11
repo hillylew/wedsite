@@ -136,4 +136,24 @@ test.describe('RSVP Form Scenarios', () => {
     await page.locator('button:has-text("Back")').click();
     await expect(page.locator('#guest1fname')).toBeVisible();
   });
+
+  test('Scenario 5: Duplicate Name - Selecting Specific Invitation', async ({ page }) => {
+    await findInvite(page, 'Mary', 'Bauer');
+    
+    // Verify that multiple invitations are found
+    await expect(page.locator('text=Multiple invitations found')).toBeVisible();
+    
+    // Select "Mary Bauer" specifically (instead of "Paul & Mary Bauer")
+    // Using filter with a more robust approach to find the exact label text
+    await page.locator('label').filter({ hasText: 'Mary Bauer' }).filter({ hasNotText: 'Paul' }).click();
+    
+    // Proceed with RSVP
+    await page.locator('#guest_0_attending_yes').click();
+    await page.locator('button:has-text("Next")').click();
+    await page.locator('#guest_0_dinner').selectOption('Chicken');
+    await page.locator('button:has-text("Next")').click();
+    
+    // Verify we reached notes
+    await expect(page.locator('text=Questions or Concerns?')).toBeVisible();
+  });
 });
