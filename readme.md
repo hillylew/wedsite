@@ -61,10 +61,6 @@ The [Fluid plugin](https://fluid.tw) for Tailwind is included by default. It is 
 #### 🌲 Alpine JS
 Alpine JS is included and loaded on each page of the site. The official focus plugin is included and used in the mobile menu.
 
-#### 🎉 Jampack 
-
-Jampack runs on `npm run build` and provides some performance optimizations. The config file is located site/jampack.config.js. Further optimizations can be had by adding `<the-fold></the-fold>` to page layouts.
-
 #### 🕸️ WebC templating
 
 WebC 11ty plugin enabled by default and its use is encouraged. WebC provides a near vanilla HTML markup experience.

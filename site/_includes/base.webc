@@ -8,6 +8,7 @@
 
     <meta name="description" :content="seo.metaDescription" webc:if="seo" />
     <meta name="twitter:card" value="summary" />
+    <meta property="og:site_name" :content="siteSettings.siteTitle" />
     <meta property="og:title" :content="title" />
     <meta property="og:type" content="article" />
     <meta property="og:url" :content="env.siteURL" />

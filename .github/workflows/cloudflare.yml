@@ -47,15 +47,6 @@ jobs:
         working-directory: site
         run: npm ci
 
-      - name: Cache jampack output
-        uses: actions/cache@v4
-        id: jampack_images
-        with:
-          path: site/.jampack/cache
-          key: jampack-cache-${{ github.run_id }}
-          restore-keys: |
-            jampack-cache-
-
       - name: Build site
         working-directory: site
         run: npm run build
