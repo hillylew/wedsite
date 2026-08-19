@@ -11,7 +11,7 @@
     <meta property="og:title" :content="title" />
     <meta property="og:type" content="article" />
     <meta property="og:url" :content="env.siteURL" />
-    <meta property="og:image" :content="imageHelper(heroImage)" webc:if="heroImage" />
+    <meta property="og:image" :content="openGraphImage(heroImage)" webc:if="heroImage" />
     <meta name="theme-color" content="#00274c" />
     <meta webc:if="seo?.noindex" name="robots" content="noindex" />
 
@@ -52,6 +52,13 @@
 
     <script webc:keep :src="javascript" defer></script>
   </head>
+
+  <script webc:setup>
+    async function openGraphImage(image) {
+      let ogImage = await imageHelper(image);
+      return ogImage;
+    }
+  </script>
 
   <body>
     <template
