@@ -5,8 +5,10 @@ export default async function (configData) {
   const query = `
     *[_type == "homepage"] {
       ...,
+      heroImage,
       "bgColor": backgroundColor.backgroundColor.value,
       ${sectionsQuery}
+      "seoImage": seo.seoImage
     }[0]
   `;
 

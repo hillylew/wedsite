@@ -12,8 +12,7 @@
     <meta property="og:title" :content="title" />
     <meta property="og:type" content="article" />
     <meta property="og:url" :content="env.siteURL" />
-    <meta property="og:image" :content="openGraphImage(seoImage)" webc:if="seoImage" />
-    <meta property="og:image" :content="openGraphImage(heroImage)" webc:else />
+    <meta property="og:image" :content="openGraphImage(seoImage || heroImage)" />
     <meta name="theme-color" content="#00274c" />
     <meta webc:if="seo?.noindex" name="robots" content="noindex" />
 

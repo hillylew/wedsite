@@ -16,6 +16,7 @@ export default class Pages {
         bgColor: (data) => data.item.bgColor,
         sections: (data) => data.item.sections,
         seo: (data) => data.item.seo,
+        seoImage: (data) => data.item.seo?.seoImage,
       },
 
       permalink: (data) => `/${data.item.slug.current}/`,
