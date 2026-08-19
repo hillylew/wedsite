@@ -15,6 +15,12 @@ export default {
         ),
     },
     {
+      name: "seoImage",
+      title: "SEO Image",
+      type: "image",
+      description: "Use a specific image for URL previews or sharing on social media. Defaults to the hero image if not set."
+    },
+    {
       name: "noindex",
       title: "Prevent search engine indexing",
       description:

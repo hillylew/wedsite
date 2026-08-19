@@ -13,6 +13,7 @@ export default async function (configData) {
       "bgColor": backgroundColor.backgroundColor.value,
       ${sectionsQuery}
       seo,
+      "seoImage": seo.seoImage,
     }
   `;
 
