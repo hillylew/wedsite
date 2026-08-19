@@ -12,7 +12,7 @@
 >
 	<div class="container p-0 flex flex-col sm:flex-row sm:justify-between sm:gap-12"
 	>
-		<div class="w-full h-[350px] overflow-hidden clip-scale bg-no-repeat sm:w-1/2 bg-center"
+		<div class="w-full h-[350px] overflow-hidden clip-scale bg-no-repeat sm:w-1/2 bg-left"
 			x-bind:class="visible && 'visible'"
 			:style="backgroundImage(image)"
 		>
