@@ -197,7 +197,10 @@
   </script>
 </template>
 
-<section class="~py-6/12 first-of-type:~pt-12/24" x-data="filterInvites()">
+<section 
+  :class="bgcolor == 'bg-white' ? '~my-12/24' : `${bgcolor} ~py-6/12 first-of-type:~pt-12/24`"
+   x-data="filterInvites()"
+>
   <div
     class="container flex justify-between ~gap-8/16"
     :class="alignment == 'right' ? 'flex-col-reverse md:flex-row-reverse' : 'flex-col md:flex-row'"

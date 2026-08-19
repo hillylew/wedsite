@@ -1,1 +1,4 @@
-<hr webc:if="breakStyle === 'lineBreak'" class="~py-6/12" :class="bgcolor" />
+<hr
+  webc:if="breakStyle === 'lineBreak'"
+  :class="bgcolor == 'bg-white' ? '~my-12/24' : `${bgcolor} ~py-6/12 first-of-type:~pt-12/24`"
+/>

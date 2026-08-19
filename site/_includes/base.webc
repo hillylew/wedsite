@@ -11,7 +11,7 @@
     <meta property="og:title" :content="title" />
     <meta property="og:type" content="article" />
     <meta property="og:url" :content="env.siteURL" />
-    <meta property="og:image" :content="`${env.siteURL}/og-image.jpg`" />
+    <meta property="og:image" :content="imageHelper(heroImage)" webc:if="heroImage" />
     <meta name="theme-color" content="#00274c" />
     <meta webc:if="seo?.noindex" name="robots" content="noindex" />
 

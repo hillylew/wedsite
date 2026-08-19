@@ -1,29 +1,28 @@
-<section class="~py-6/12 first-of-type:~pt-12/24">
-  <div 
-    class="container flex flex-col justify-between ~gap-8/16" 
+<section 
+  :class="bgcolor == 'bg-white' ? '~my-12/24' : `${bgcolor} ~py-6/12 first-of-type:~pt-12/24`"
+>
+  <div
+    class="container flex flex-col justify-between ~gap-8/16"
     :class="alignment == 'right' ? 'flex-col-reverse md:flex-row-reverse' : 'flex-col md:flex-row'"
   >
-    <div webc:if="image" 
-      class="md:w-1/2"
-      x-data="{ visible: false }" 
+    <div
+      webc:if="image"
+      class="w-full md:w-1/2"
+      x-data="{ visible: false }"
       x-intersect.threshold.25.once="visible = true"
     >
-      <img 
-        :src="imageHelper(image.image, 640)" 
-        :alt="alt" 
-      />
+      <img :src="imageHelper(image.image, 640)" :alt="alt" />
     </div>
-    <div 
-      :class="image ? 'md:w-2/3' : ''"
-      x-data="{ visible: false }" 
+    <div
+      :class="image ? 'text-xl md:w-2/3' : 'text-2xl mx-auto text-center'"
+      x-data="{ visible: false }"
       x-intersect.threshold.25.once="visible = true"
     >
       <div
         x-bind:class="visible && '!opacity-100'"
-        class="object-cover w-full h-full duration-500 motion-safe:opacity-0 transition-opacity [&>ul]:list-disc [&>ul]:pl-4 [&>ol]:list-decimal [&>ol]:pl-4 max-w-lg"
+        class="object-cover w-full h-full duration-500 motion-safe:opacity-0 transition-opacity [&>ul]:list-disc [&>ul]:pl-4 [&>ol]:list-decimal [&>ol]:pl-4 max-w-2xl"
         @html="portableToHTML(text)"
-      >
-      </div>
+      ></div>
     </div>
   </div>
 </section>

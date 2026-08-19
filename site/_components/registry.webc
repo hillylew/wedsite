@@ -1,4 +1,4 @@
-<div class="container ~py-6/12 first-of-type:~pt-12/24">
+<div class="container ~my-6/12">
   <a
     class="zola-registry-embed"
     :href="registry"

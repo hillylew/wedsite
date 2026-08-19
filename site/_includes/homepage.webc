@@ -23,6 +23,7 @@ layout: base
       }"
       x-show="showSuccess"
       x-transition
+      x-cloak
       class="rsvp-success-message bg-gold text-crete p-4 text-center"
     >
       <h2>Thank you!</h2>

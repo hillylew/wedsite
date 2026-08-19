@@ -1,22 +1,22 @@
 <script webc:setup>
 	async function backgroundImage(image) {
-		let heroImage = await imageHelper(image, 580, 350);
+		let heroImage = await imageHelper(image, 640, 386);
 		return "background-image:url(" + heroImage + ")";
 	}
 </script>
 
-<div class="relative hero-area py-8 sm:py-16 sm:h-[478px]" 
+<div class="relative hero-area pb-8 sm:py-16 sm:h-[478px]" 
 	:class="bgcolor"
 	x-data="{ visible: false }" 
 	x-intersect.threshold.25.once="visible = true"
 >
 	<div class="container p-0 flex flex-col sm:flex-row sm:justify-between sm:gap-12"
 	>
-		<div class="w-full h-[350px] overflow-hidden clip-scale bg-no-repeat bg-center sm:w-1/2 md:bg-left"
+		<div class="w-full h-[350px] overflow-hidden clip-scale bg-no-repeat sm:w-1/2 bg-left"
 			x-bind:class="visible && 'visible'"
 			:style="backgroundImage(image)"
 		>
 		</div>
-		<h1 class="text-center py-6 sm:text-left sm:py-0 sm:w-1/2" @text="title"></h1>
+		<h1 class="px-4 sm:px-0text-center py-6 sm:text-left sm:py-0 sm:w-1/2" @text="title"></h1>
 	</div>
 </div>

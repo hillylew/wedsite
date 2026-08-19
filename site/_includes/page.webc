@@ -9,7 +9,7 @@ layout: base
     <article>
       <page-hero
         :@image="heroImage"
-        :@title="title"
+        :@title="heroHeading"
         :@bgcolor="bgColor"
       ></page-hero>
 
