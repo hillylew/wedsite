@@ -56,7 +56,7 @@
   <script webc:setup>
     async function openGraphImage(siteUrl, image) {
       let ogImage = await imageHelper(image);
-      return siteUrl + ogImage;
+      return ogImage;
     }
   </script>
 

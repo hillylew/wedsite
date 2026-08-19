@@ -2,7 +2,6 @@ node_modules
 _site/*
 .env
 .cache
-.jampack
 
 !_site/.gitkeep
 
