@@ -10,9 +10,9 @@
 	x-data="{ visible: false }" 
 	x-intersect.threshold.25.once="visible = true"
 >
-	<div class="container p-0 flex flex-col sm:flex-row sm:justify-between sm:gap-12"
+	<div class="container p-0 flex flex-col sm:flex-row sm:justify-between sm:gap-6 md:gap-12"
 	>
-		<div class="w-full h-[350px] overflow-hidden clip-scale bg-no-repeat sm:w-1/2 bg-left"
+		<div class="w-full h-[350px] overflow-hidden clip-scale bg-no-repeat bg-cover bg-top sm:w-1/2"
 			x-bind:class="visible && 'visible'"
 			:style="backgroundImage(image)"
 		>

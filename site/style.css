@@ -77,19 +77,19 @@
   }
 
   h1 {
-    @apply font-cursive text-7xl;
+    @apply font-cursive text-6xl md:text-7xl;
   }
 
   h2 {
-    @apply font-cursive text-6xl;
+    @apply font-cursive text-5xl md:text-6xl;
   }
 
   h3 {
-    @apply font-cursive text-4xl;
+    @apply font-cursive text-3xl md:text-4xl;
   }
 
   h4 {
-    @apply font-cursive text-2xl;
+    @apply font-cursive text-xl md:text-2xl;
   }
 
   h1,
