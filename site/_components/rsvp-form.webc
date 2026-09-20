@@ -550,7 +550,7 @@
               <template x-if="guest.attending">
                 <div>
                   <p class="my-0" x-show="eventType === 'wedding'"><strong>Dinner:</strong> <span class="text-lg" x-text="guest.dinner || 'Not specified'"></span></p>
-                  <p class="my-0" x-show="guest.allergies"><strong>Allergies:</strong> <span class="text-lg" x-text="guest.allergies"></span></p>
+                  <p class="my-0" x-show="guest.allergies"><strong>Restrictions:</strong> <span class="text-lg" x-text="guest.allergies"></span></p>
                 </div>
               </template>
             </div>
