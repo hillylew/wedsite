@@ -166,13 +166,26 @@ export async function onRequestPost(context) {
     const accessToken = await getGoogleSheetsAccessToken(env);
     let result = await addRow(formData, accessToken, env);
     if (result.error) {
-      return new Response(`Error: ${result.error}`, { status: 500 });
+      return new Response(JSON.stringify({ success: false, error: result.error }), { 
+        status: 500, 
+        headers: { "Content-Type": "application/json" } 
+      });
     }
-    // Redirect to homepage with success message
-    return Response.redirect(env.SITE_URL + "/?rsvp=success", 302);
+    // Return success JSON instead of redirecting
+    return new Response(JSON.stringify({ 
+      success: true, 
+      message: "Success! Your RSVP has been recorded." 
+    }), { 
+      status: 200, 
+      headers: { "Content-Type": "application/json" } 
+    });
   } catch (error) {
-    return new Response(`Internal Server Error: ${error.message}`, {
-      status: 500,
+    return new Response(JSON.stringify({ 
+      success: false, 
+      error: `Internal Server Error: ${error.message}` 
+    }), { 
+      status: 500, 
+      headers: { "Content-Type": "application/json" } 
     });
   }
 }

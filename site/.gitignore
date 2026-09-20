@@ -2,6 +2,7 @@ node_modules
 _site/*
 .env
 .cache
+.wrangler
 
 !_site/.gitkeep
 
