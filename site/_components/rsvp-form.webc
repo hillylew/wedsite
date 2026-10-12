@@ -43,8 +43,6 @@
            }
          },
 
-
-
          startSearch() {
            this.searchStarted = true;
            this.error = "";
@@ -445,10 +443,9 @@
                     required=""
                   >
                     <option value="">Select an option</option>
-                    <option value="Chicken">Chicken</option>
-                    <option value="Fish">Fish</option>
-                    <option value="Vegetarian">Vegetarian</option>
-                    <option value="Vegan">Vegan</option>
+                    <option value="Chicken">Chicken Lemon Scallopini</option>
+                    <option value="Steak">Sirloin Filet</option>
+                    <option value="Vegetarian">Lentil Bolognese (Vegetarian)</option>
                   </select>
                 </div>
 
@@ -464,8 +461,7 @@
                     Does <span x-text="guest.fname"></span> have any food
                     allergies or restrictions?
                   </label>
-                  <p class="description">
-                    Gluten, Dairy, Shellfish, Peanuts, etc.
+                  <p class="description">Please list any allergies or dietary restrictions (e.g. vegan, gluten, dairy, peanuts, etc). We can accommodate any request.
                   </p>
                   <textarea
                     x-bind:id="'guest_' + index + '_allergies'"
@@ -550,7 +546,7 @@
               <template x-if="guest.attending">
                 <div>
                   <p class="my-0" x-show="eventType === 'wedding'"><strong>Dinner:</strong> <span class="text-lg" x-text="guest.dinner || 'Not specified'"></span></p>
-                  <p class="my-0" x-show="guest.allergies"><strong>Allergies:</strong> <span class="text-lg" x-text="guest.allergies"></span></p>
+                  <p class="my-0" x-show="guest.allergies"><strong>Allergies/Restrictions:</strong> <span class="text-lg" x-text="guest.allergies"></span></p>
                 </div>
               </template>
             </div>
