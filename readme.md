@@ -1,16 +1,18 @@
-# 🧑‍🎤 Creative Sanity Starter
+# 💍 Wedding Website
 
-Starting point for a standard web project requiring Sanity Studio.
+A simple wedding website with Sanity Studio for content management and a Cloudflare Worker for RSVP submissions to Google Sheets.
 
 ## ⭐ Features
 
 ### 🎙️ Sanity Studio
+Content management for the website, allowing for easy updates to the homepage, various pages, and site settings without touching code.
 
 <details>
   <summary>Schemas</summary>
 
   - Pages
   - Homepage
+  - Invitations
   - Contact Info
   - Site Settings
   - Main Menu Navigation
@@ -25,6 +27,15 @@ Starting point for a standard web project requiring Sanity Studio.
   - Quote
   - Buttons
   - Table
+  - RSVP for wedding or shower
+</details>
+
+<details>
+  <summary>Plugins</summary>
+
+  - Media plugin for asset management
+  - Simpler Color Input for theme colors
+  - Vision tool for GROQ queries
 </details>
 
 <details>
@@ -44,9 +55,12 @@ Starting point for a standard web project requiring Sanity Studio.
   - Media plugin
 </details>
 
-### 🌐 11ty site
+### 🌐 11ty Site
+A high-performance static site built with Eleventy.
 
 #### 🌬️ Tailwind CSS
+Styled using Tailwind CSS for a modern, responsive design.
+
 Tailwind CSS is configured and setup for use in the front end template files. A simple `tailwind.config.js` file is provided with common colors and scaffolding.
 
 #### 💧 Fluid Tailwind Plugin
@@ -59,83 +73,50 @@ The [Fluid plugin](https://fluid.tw) for Tailwind is included by default. It is 
 ```
 
 #### 🌲 Alpine JS
-Alpine JS is included and loaded on each page of the site. The official focus plugin is included and used in the mobile menu.
+Interactive elements are powered by Alpine JS.
 
 #### 🕸️ WebC templating
+Uses WebC for a component-based approach to HTML templates.
 
-WebC 11ty plugin enabled by default and its use is encouraged. WebC provides a near vanilla HTML markup experience.
+#### 📩 RSVP Form
+A dynamic RSVP system that collects guest responses and stores them directly in a Google Spreadsheet.
 
-#### 💾 Example Sanity Data Fetching
+The RSVP form can handle both wedding invitations as well as bridal shower invitations. The Sanity Invites object will store the family information, whether there is an unknown plus one invited, and each family member's name with a flag if they're also invited to the bridal shower.
 
-`_data` folder with examples for bringing in data from a Sanity project. This example data is aligned to the schema used in the starter studio.
+When first filling out the RSVP form, the user must enter their name. The AlpineJS code will take all of the invitations and search for the specific user to find their family information. If there are multiple possibilities (people with the same exact name), it will display each and ask the user to confirm their family. If there is a plus one, there will be room for the user to enter that person's information. Otherwise, it will guide the user through every family member invited to the specific function, and ask for attendance, meal choices (if RSVPing to the wedding), and/or allergens. At the end of the form is a space for general notes to the couple.
 
-#### 📄 Example Content Generation
+The form will submit to a single Google spreadsheet with two tabs - one called "Bridal" for the shower, and one simple called "RSVP" for the wedding. Each person, regardless of family, will be entered as a separate row in the spreadsheet. The single notes entry will appear with the first family member's row data.
 
-Full content pages and the main navigation are rendered on the site.
+The user will see a short confirmation message and summary of their submission after pressing the "Submit" button. The site does not send out emails.
 
 ## ⚙️ Configuration
 
+The project uses an `.env` file located in the site and studio directories to manage environment variables for both the site and the studio.
+
 ### 🎙️ Sanity Studio
+- `SANITY_STUDIO_TITLE`: The title displayed in the studio.
+- `SANITY_STUDIO_PROJECT_ID`: Your Sanity project ID.
+- `SANITY_STUDIO_DATASET`: The dataset name (e.g., `production`).
+- `SANITY_AUTH_TOKEN`: API token for deployment and authentication.
 
-#### 1️⃣ Create Sanity Project
-A new Sanity project can be created within the Michigan Creative organization in the [Sanity web interface](https://www.sanity.io/manage). Creating the project will provide a **project ID** and **dataset** needed for configuring the studio and site.
+### 🌐 11ty Site
+- `SITE_URL`: The absolute URL of the deployed site (used for SEO and absolute paths).
 
-#### 2️⃣ Generate Sanity API Token
-A Sanity API token can be created in the web interface after the project is created: https://www.sanity.io/organizations/{organization-id}/project/{project-id}/api. The token needs to have the "Deploy Studio (Token only) permission". This token is used for deploying the studio with GitHub Actions and is used as the value in the `SANITY_AUTH_TOKEN` environment variable.
-
-#### 3️⃣ Create Environment Configuration File
-
-The following environment variables are required in both local and CI environments. Create a ```.env``` file and insert the following values to work locally. A `.env.example` file exists to reference the values.
-
-```bash
-SANITY_STUDIO_TITLE="any title you would like to display inside the studio"
-SANITY_STUDIO_PROJECT_ID="project id from creating the project in step 1"
-SANITY_STUDIO_DATASET="dataset from creating the project in step 1"
-SANITY_AUTH_TOKEN="sanity api token generated in step 2"
-```
-
-#### 4️⃣ Generate GitHub Authorization Token
-
-An authorization token from GitHub is needed to trigger site deploys when content changes in Sanity Studio. The token is a "fine-grained personal access token" and can be created here: https://github.com/settings/personal-access-tokens/new. These tokens do expire but can be set to last for one year. This token will be used in the next step when setting up a Sanity webhook. Important fields are:
-
-- Expiration: `Custom` (1 year into the future is suggested)
-- Resource owner: `m-creative-web`
-- Repository access: `Only select repositories` (limit to project repo)
-- Permissions
-  - Repository permissions
-    - Contents: `Read and write`
-    - Metadata: `Read-only`
-
-#### 5️⃣ Create Sanity Webhook
-
-The second step to getting site builds from content changes working, is setting up a GROQ-powered webhook in the Sanity web interface: https://www.sanity.io/organizations/{organization-id}/project/{project-id}/api. Important fields are:
-
-- URL: `https://api.github.com/repos/{repo-owner}/{repo-name}/dispatches`
-- Dataset: `[dataset from step 1]`
-- Trigger on: `Create` `Update` `Delete`
-- Projection: `{"event_type":"sanity_publish"}`
-- HTTP method: `POST`
-- HTTP headers
-  - `Accept`: `application/vnd.github+json`
-  - `Authorization`: `Bearer [personal access token from GitHub]`
-  - `X-GitHub-Api-Version`: `2022-11-28`
-
-
-### 🌐 11ty site
-
-Ensure the following environment variables are present in the ```.env``` file that was created in the previous steps:
-
-```bash
-SITE_URL="http://localhost:8080" # Used for setting absolute URLs for things like og-image
-SANITY_STUDIO_PROJECT_ID="sanity-project-id"
-SANITY_STUDIO_DATASET="sanity-project-dataset"
-```
+### 📩 RSVP / Google Sheets
+The RSVP form is powered by a Cloudflare Worker that requires the following Google Service Account credentials to write to a spreadsheet:
+- `GOOGLE_SERVICE_ACCOUNT_EMAIL`: The email of the Google service account.
+- `GOOGLE_PRIVATE_KEY`: The PEM formatted private key of the service account.
+- `GOOGLE_SPREADSHEET_ID`: The ID of the target Google Spreadsheet.
+- `GOOGLE_SHEETS_SUBSCRIBERS_PAGE`: The range/sheet name for general RSVPs (e.g., `RSVP!A3:J`).
+- `GOOGLE_SHEETS_BRIDAL_SHOWER_PAGE`: The range/sheet name for bridal shower RSVPs.
 
 ## 🔧 Development
 
 These commands apply to both the studio and the site, but must be run for each. The applications work together but have independent dev environments and builds.
 
+### 🌐 Site
 ```bash
+cd site
 nvm use # Switch to appropriate Node version
 npm install # Install dependencies
 npm run dev # Run local server
@@ -144,18 +125,19 @@ npm run dev # Run local server
 ## 🚀 Deploy
 
 ### 🎙️ Sanity Studio
-
 The studio will deploy to sanity.io when changes are detected in the studio on a code push to the main branch.
 
 The studio can also be manually deployed:
-
 ```bash
+cd studio
 nvm use # Switch to appropriate Node version
 npm ci # Install dependencies
 npm run deploy # Deploy to sanity.io
 ```
 
-### 🌐 11ty site
-
-The 11ty site will deploy to GitHub Pages when code is pushed. Ensure Pages is enabled in the repository settings.
-
+### 🌐 11ty Site
+Deploys the static site to Cloudflare Pages using Wrangler.
+```bash
+cd site
+npm run deploy
+```
